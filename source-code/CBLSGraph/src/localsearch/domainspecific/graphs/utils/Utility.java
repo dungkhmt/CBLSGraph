@@ -11,57 +11,64 @@ import java.util.Random;
 
 
 public class Utility {
-	public static void collectReplacedEdges(VarRootedTree vt, Edge e, HashSet<Edge> E){
-		Node u = e.getBegin();
-		Node v = e.getEnd();
-		Node uv = vt.nca(u, v);
+    public static void collectReplacedEdges(VarRootedTree vt, Edge e, HashSet<Edge> E) {
+        Node u = e.getBegin();
+        Node v = e.getEnd();
+        Node uv = vt.nca(u, v);
+
+        E.clear();
+        Node x = u;
+        while (x != uv) {
+            Edge ei = vt.getFatherEdge(x);
+            E.add(ei);
+            x = vt.getFatherNode(x);
+        }
+        x = v;
+        while (x != uv) {
+            Edge ei = vt.getFatherEdge(x);
+            E.add(ei);
+            x = vt.getFatherNode(x);
+        }
+    }
+
+    public static String setEdge2String(HashSet<Edge> E) {
+        String s = "";
+        for (Edge e : E) {
+            s = s + e.toString() + ", ";
+        }
+        return s;
+    }
+
+    public static String setNode2String(HashSet<Node> N) {
+        String s = "";
+        for (Node n : N) {
+            s = s + n.toString() + ", ";
+        }
+        return s;
+    }
+
+    public static Edge randomSelect(HashSet<Edge> E) {
+        int sz = E.size();
+        if (sz == 0) return null;
+        Random R = new Random();
+        int idx = R.nextInt(sz);
+        int i = 0;
+        for (Edge e : E) {
+            if (i == idx) return e;
+            i++;
+        }
+        return null;
+    }
+
+    public static String name() {
+        return "Utility";
+    }
+
+    public static UndirectedGraph genRandomRootedTree(UndirectedGraph g, Node root, int nbEdges) {
+/*		UndirectedGraph t = new UndirectedGraph();
+        HashSet<Edge> candidates = new HashSet<Edge>();
 		
-		E.clear();
-		Node x = u;
-		while(x != uv){
-			Edge ei = vt.getFatherEdge(x);
-			E.add(ei);
-			x = vt.getFatherNode(x);
-		}
-		x = v;
-		while(x != uv){
-			Edge ei = vt.getFatherEdge(x);
-			E.add(ei);
-			x = vt.getFatherNode(x);
-		}
-	}
-	public static String setEdge2String(HashSet<Edge> E){
-		String s = "";
-		for(Edge e : E){
-			s = s + e.toString() + ", ";
-		}
-		return s;
-	}
-	public static String setNode2String(HashSet<Node> N){
-		String s = "";
-		for(Node n : N){
-			s = s + n.toString() + ", ";
-		}
-		return s;
-	}
-	public static Edge randomSelect(HashSet<Edge> E){
-		int sz = E.size();
-		if(sz == 0) return null;
-		Random R = new Random();
-		int idx = R.nextInt(sz);
-		int i = 0;
-		for(Edge e : E){
-			if(i == idx) return e;
-			i++;
-		}
-		return null;
-	}
-	public static String name(){ return "Utility";}
-	public static UndirectedGraph genRandomRootedTree(UndirectedGraph g, Node root, int nbEdges){
-		UndirectedGraph t = new UndirectedGraph();
-		HashSet<Edge> candidates = new HashSet<Edge>();
-		
-		for(Edge e : g.getAdj().get(root)){
+		for(Edge e : g.getAdj(leaf).get(root)){
 			candidates.add(e);
 		}
 		for(int k = 0; k < nbEdges; k++){
@@ -93,7 +100,7 @@ public class Utility {
 					//System.out.println(name() + "::genRandomTree, establish R, ei = " + ei.toString() + " contains " + v.toString() + ", --> ADDED");
 				}
 			}
-			for(Edge ei : g.getAdj().get(v)){
+			for(Edge ei : g.getAdj(leaf).get(v)){
 				//System.out.println(name() + "::genRandomTree, establish A, ei = " + ei.toString());
 				Node u = ei.otherNode(v);
 				//if(candidates.contains(ei))
@@ -113,12 +120,14 @@ public class Utility {
 			//System.out.println(name() + "::genRandomTree, final candidate = " + Utility.setEdge2String(candidates));
 		}
 		return t;
-	}
-	
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		*/
+        return null;
+    }
 
-	}
+
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+
+    }
 
 }

@@ -62,7 +62,7 @@ public class InsertableEdgesVarRootedTree  implements GraphInvariant {
 	}
 	@Override
 	public void propagateAddEdge(VarRootedTree vt, Edge e) {
-		// TODO Auto-generated method stub
+	/*	// TODO Auto-generated method stub
 		System.out.println(name() + "::propagateAddEdge(" + e.toString() + ")");
 		if(this.vt != vt)
 			return;
@@ -93,17 +93,18 @@ public class InsertableEdgesVarRootedTree  implements GraphInvariant {
 		for(Edge ei : toRemove){
 			insertableEdges.remove(ei);
 		}
-		HashSet<Edge> incidents = lub.getAdj().get(leaf);
+		HashSet<Edge> incidents = lub.getAdjEdge(leaf).getClass(leaf);
 		for(Edge ei : incidents){
 			if(ei != e && !vt.contains(ei.otherNode(leaf))){
 				insertableEdges.add(ei);
 			}
 		}
+		*/
 	}
 
 	@Override
 	public void propagateRemoveEdge(VarRootedTree vt, Edge e) {
-		// TODO Auto-generated method stub
+/*		// TODO Auto-generated method stub
 		System.out.println(name() + "::propagateRemoveEdge(" + e.toString() + ")");
 		if(this.vt != vt)
 			return;
@@ -133,13 +134,13 @@ public class InsertableEdgesVarRootedTree  implements GraphInvariant {
 		for(Edge ei : toRemove){
 			insertableEdges.remove(ei);
 		}
-		for(Edge ei : lub.getAdj().get(cv)){
+		for(Edge ei : lub.getAdj(leaf).get(cv)){
 			Node other = ei.otherNode(cv);
 			if(vt.contains(other)){
 				insertableEdges.add(ei);
 			}
 		}
-
+*/
 	}
 
 	@Override

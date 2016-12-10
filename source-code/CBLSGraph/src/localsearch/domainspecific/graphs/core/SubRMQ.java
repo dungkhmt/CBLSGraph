@@ -51,7 +51,7 @@ public class SubRMQ {
 		}
 		for(int j = 2; j <= _l; j++){
 			for(int i = 1; i <= _count-1; i++){
-				int k = 2^(j-1)-1;
+				int k = (1 << (j-1))-1;
 				if(i+k+1 <= _count-1){
 					if(_rmq[i][j-1] < _rmq[i+k+1][j-1]){
 						_rmq[i][j] = _rmq[i][j-1];
@@ -77,7 +77,7 @@ public class SubRMQ {
 		}
 		for(int j = 2; j <= _l; j++){
 			for(int i = 1; i <= _count-1; i++){
-				int k = 2^(j-1)-1;
+				int k = (1 << (j-1))-1;
 				if(i+k+1 <= _count-1){
 					if(_rmq[i][j-1] < _rmq[i+k+1][j-1]){
 						_rmq[i][j] = _rmq[i][j-1];
@@ -97,7 +97,7 @@ public class SubRMQ {
 		if(i == j)
 			return i;
 				int k = (int)Math.floor(log2(j-i+1));
-				int k2 = 2^k;
+				int k2 = 1 << k;
 				if(_rmq[i][k] < _rmq[j-k2+1][k]){
 					return _rmqPos[i][k];
 				}else{
@@ -130,12 +130,12 @@ public class SubRMQ {
 		for(int j = 2; j <= _l; j++){
 			int a = 1;
 			int b = _count;
-			int pa = aa - 2^j + 1;
-			int pb = b - 2^j + 1;		 
+			int pa = aa - (1 << j) + 1;
+			int pb = b - (1 << j) + 1;
 			int s = a > pa?a:pa;
 			int e = bb < pb?bb:pb;
 			for(int i = s; i <= e; i++){
-				int k = 2^(j-1)-1;
+				int k = (1 << (j-1))-1;
 				if(i+k+1 <= _count-1){
 					if(_rmq[i][j-1] < _rmq[i+k+1][j-1]){
 						_rmq[i][j] = _rmq[i][j-1];
@@ -159,12 +159,12 @@ public class SubRMQ {
 			}
 		}
 		for(int j = 2; j <= _l; j++){
-			int pa = aa - 2^j + 1;
-			int pb = b - 2^j + 1;		 
+			int pa = aa - (1 << j) + 1;
+			int pb = b - (1 << j) + 1;
 			int s = a > pa?a:pa;
 			int e = bb < pb?bb:pb;
 			for(int i = s; i <= e; i++){
-				int k = 2^(j-1)-1;
+				int k = (1 << (j-1)) -1;
 				if(i+k+1 <= _count-1){
 					if(_rmq[i][j-1] < _rmq[i+k+1][j-1]){
 						_rmq[i][j] = _rmq[i][j-1];

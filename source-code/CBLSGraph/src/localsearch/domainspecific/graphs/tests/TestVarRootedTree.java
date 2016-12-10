@@ -19,7 +19,7 @@ public class TestVarRootedTree {
 
 	public void test(){
 		try{
-			Scanner in = new Scanner(new File("data\\graphs\\g.txt"));
+			Scanner in = new Scanner(new File("data/g.txt"));
 			HashMap<Integer, Node> m = new HashMap<Integer, Node>();
 			UndirectedGraph ug = new UndirectedGraph();
 			while(in.hasNext()){

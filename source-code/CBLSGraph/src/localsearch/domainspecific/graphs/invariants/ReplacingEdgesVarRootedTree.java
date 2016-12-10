@@ -90,7 +90,7 @@ public class ReplacingEdgesVarRootedTree implements GraphInvariant {
 			other = e.getBegin();
 		}
 		UndirectedGraph lub = vt.getLUB();
-		HashSet<Edge> incidents = lub.getAdj(leaf);
+		HashSet<Edge> incidents = lub.getAdjEdge(leaf);
 		int c = 0;
 		for(Edge ei : incidents){
 			Node v = ei.otherNode(leaf);
@@ -102,7 +102,7 @@ public class ReplacingEdgesVarRootedTree implements GraphInvariant {
 
 	@Override
 	public void propagateRemoveEdge(VarRootedTree vt, Edge e) {
-		// TODO Auto-generated method stub
+/*		// TODO Auto-generated method stub
 		System.out.println(name() + "::propagateRemoveEdge(" + e.toString() + ")");
 		if(this.vt != vt)
 			return;
@@ -124,13 +124,13 @@ public class ReplacingEdgesVarRootedTree implements GraphInvariant {
 			System.exit(-1);		
 		}
 		//set{Edge}[] adjEdges = _lub.adjacentEdges();
-		for(Edge ei : lub.getAdj().get(cv)){
+		for(Edge ei : lub.getAdjEdge(leaf).get(cv)){
 			Node other = ei.otherNode(cv);
 			if(vt.contains(other)){
 				replacingEdges.remove(ei);
 			}
 		}
-
+*/
 	}
 
 	@Override

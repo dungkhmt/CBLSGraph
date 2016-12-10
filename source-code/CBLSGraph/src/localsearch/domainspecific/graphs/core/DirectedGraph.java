@@ -11,6 +11,6 @@ public class DirectedGraph extends Graph {
 	private HashMap<Node, ArrayList<Edge>> incomingArcs;
 	private HashMap<Node, ArrayList<Edge>> outgoingArcs;
 	public DirectedGraph(){
-		
+
 	}
 }

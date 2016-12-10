@@ -42,7 +42,7 @@ public class QuickRMQ {
 		}
 		_B = new int[_nbrBlocks+1];
 		_indexB = new int[_nbrBlocks+1];
-		_nbrNormalizedBlocks = 2^(_subSize-1);
+		_nbrNormalizedBlocks = 1 << (_subSize-1);
 		//_table = new int[0.._nbrNormalizedBlocks-1, 1.._subSize, 1.._subSize];
 		_table = new int[_nbrNormalizedBlocks][][];
 		for(int i = 0; i < _nbrNormalizedBlocks; i++){
@@ -236,7 +236,7 @@ public class QuickRMQ {
 		System.out.println("_indexB = " + _indexB);
 	}
 	public boolean verify(){
-		System.out.println("QuickRMQ::verify….");
+		System.out.println("QuickRMQ::verifyï¿½.");
 		if(!_rmq.verify())
 			return false;
 		//forall(i in 1.._n, j in i.._n){

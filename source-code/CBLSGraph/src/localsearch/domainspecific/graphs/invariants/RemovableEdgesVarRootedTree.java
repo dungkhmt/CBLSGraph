@@ -95,7 +95,7 @@ public class RemovableEdgesVarRootedTree implements GraphInvariant {
 
 	@Override
 	public void propagateRemoveEdge(VarRootedTree vt, Edge e) {
-		// TODO Auto-generated method stub
+/*		// TODO Auto-generated method stub
 		System.out.println(name() + "::propagateRemoveEdge(" + e.toString() + ")");
 		if(vt != vt)
 			return;
@@ -120,7 +120,7 @@ public class RemovableEdgesVarRootedTree implements GraphInvariant {
 		//set{Edge}[] adjEdges = _lub.adjacentEdges();
 		removableEdges.remove(e);
 		//if(_adjEdges[fv.getID()].getSize() == 2  && fv != _root){
-		if(lub.getAdj().get(fv).size() == 2 && fv != vt.root()){
+		if(lub.getAdj(leaf).get(fv).size() == 2 && fv != vt.root()){
 			for(Edge ei : vt.getAdj().get(fv)){
 				Node other = ei.otherNode(fv);
 				if(other != cv){
@@ -128,6 +128,7 @@ public class RemovableEdgesVarRootedTree implements GraphInvariant {
 				}
 			}
 		}
+		*/
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class VarRootedTree extends VarUndirectedGraph {
 		
 		UndirectedGraph t = Utility.genRandomRootedTree(lub,root,lub.getNbrNodes()-1);
 		allocateNCA();
-		initComputation(root, t.getNodes(), t.getEdges(), t.getAdj());
+		//initComputation(root, t.getNodes(), t.getEdges(), t.getAdjEdge(leaf));
 	}
 	private void allocateNCA(){
 	}
