@@ -31,6 +31,6 @@ public class Edge extends BasicGraphElement {
 		return begin == v || end == v;
 	}
 	public String toString(){
-		return "(" + begin.getID() + "," + end.getID() + ")";
+		return "Edge (" + begin.getID() + "," + end.getID() + ")";
 	}
 }
