@@ -9,6 +9,7 @@ public class Node extends BasicGraphElement {
 		super(id);
 	}
 	public String toString(){
-		return getID() + "";
+		return "Node" + getID() + "";
+
 	}
 }
