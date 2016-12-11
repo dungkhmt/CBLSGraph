@@ -77,7 +77,10 @@ public class NearestCommonAncestor {
 		pos[u.getID()] = count;
 		eulerTour[count++] = u;
 		Node fu = vt.getFatherNode(u);
-		for (Edge e : vt.getAdj().get(u)) {
+		if (vt.isNull()) {
+			return;
+		}
+		for (Edge e : vt.getAdj(u)) {
 			Node v = e.otherNode(u);
 			if (v != fu) {
 				DFS(v, l + 1);

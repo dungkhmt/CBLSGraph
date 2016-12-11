@@ -9,11 +9,11 @@ import java.io.File;
 public class UndirectedGraph extends Graph {
 	
 	private HashMap<Node, HashSet<Edge>> Adj;
-	private HashMap<Node, HashMap<Node, Integer>> adjNode;
+	//private HashMap<Node, HashMap<Node, Integer>> adjNode;
 	
 	public UndirectedGraph() {
 		Adj = new HashMap<Node, HashSet<Edge>>();
-		adjNode = new HashMap<Node, HashMap<Node, Integer>>();
+		//adjNode = new HashMap<Node, HashMap<Node, Integer>>();
 	}
 	
 	private void updateEdge(Edge e) {
@@ -21,16 +21,16 @@ public class UndirectedGraph extends Graph {
 		Node v = e.getEnd();
 		if (Adj.get(u) == null) {
 			Adj.put(u, new HashSet<Edge>());
-			adjNode.put(u, new HashMap<Node, Integer>());
+			//adjNode.put(u, new HashMap<Node, Integer>());
 		}
 		if (Adj.get(v) == null) {
 			Adj.put(v, new HashSet<Edge>());
-			adjNode.put(v, new HashMap<Node, Integer>());
+			//adjNode.put(v, new HashMap<Node, Integer>());
 		}
 		Adj.get(u).add(e);
 		Adj.get(v).add(e);
-		adjNode.get(u).put(v, e.getID());
-		adjNode.get(v).put(u, e.getID());
+		//adjNode.get(u).put(v, e.getID());
+		//adjNode.get(v).put(u, e.getID());
 	}
 	
 	@Override
@@ -45,15 +45,15 @@ public class UndirectedGraph extends Graph {
 		return e;
 	}
 	
-	public Edge edge(Node u, Node v){
-		return getEdgeByID(adjNode.get(u).get(v));
-	}
+	//public Edge edge(Node u, Node v){
+	//	return getEdgeByID(adjNode.get(u).get(v));
+	//}
 	
-	public Set<Node> getAdjNode(Node u) {
-		return adjNode.get(u).keySet(); 
-	}
+	//public Set<Node> getAdjNode(Node u) {
+	//	return adjNode.get(u).keySet();
+	//}
 	
-	public HashSet<Edge> getAdjEdge(Node u) {
+	public HashSet<Edge> getAdj(Node u) {
 		return Adj.get(u);
 	}
 	
@@ -69,10 +69,11 @@ public class UndirectedGraph extends Graph {
 		//System.out.println(name() + "::print, nodes = " + Utility.setNode2String(nodes) + ", edges = " + Utility.setEdge2String(edges));
 		for(Node v : nodes){
 			System.out.print("Node " + v.getID() + " : ");
-			for(Edge e : getAdjEdge(v)){
+			for(Edge e : getAdj(v)){
 				System.out.print("(" + e.getBegin().getID() + "," + e.getEnd().getID() + ") ");
 			}
-			for (Node u : getAdjNode(v)) {
+			for (Edge e : getAdj(v)) {
+				Node u = e.otherNode(v);
 				System.out.print(" " + u.getID());
 			}
 			System.out.println();
