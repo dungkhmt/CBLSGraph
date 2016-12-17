@@ -7,7 +7,7 @@ package localsearch.domainspecific.graphs.model;
 
 import localsearch.domainspecific.graphs.core.Edge;
 
-public interface GraphInvariant {
+public interface GInvariant {
 	public VarGraph[] getVarGraphs();
 	public LSGraphManager getLSGraphManager();
 	public void setID(int id);

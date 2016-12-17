@@ -13,6 +13,7 @@ import localsearch.domainspecific.graphs.core.LowestCommonAncestor;
 import localsearch.domainspecific.graphs.core.NearestCommonAncestor;
 import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.core.UndirectedGraph;
+import localsearch.domainspecific.graphs.invariants.InsertableEdgesVarRootedTree;
 
 public class VarRootedTree extends VarTree {
 	
@@ -221,6 +222,11 @@ public class VarRootedTree extends VarTree {
 			LSGraphManager mgr = new LSGraphManager();
 			Node r = ug.getNodeByID(1);
 			VarRootedTree t = new VarRootedTree(mgr,ug,r);
+			InsertableEdgesVarRootedTree I = new InsertableEdgesVarRootedTree(t);
+			
+			mgr.close();
+			
+			
 			long start = System.currentTimeMillis();
 			for (int i = 1; i < m.size(); i++) {
 				//System.out.print(i + "\n");
@@ -228,14 +234,15 @@ public class VarRootedTree extends VarTree {
 					t.addEdge(e);
 				}
 			}
-			//t.print();
+			t.print();
 			//PrinterOutput fo = new PrinterOutput("NCA.txt");
 			
 			for(Node v : t.getNodes()) {
 				for(Node u : t.getNodes()) { 
 					System.out.println(v.getID() + " " + u.getID() + " " + t.nca(u, v).getID());
 				}
-			}	
+			}
+			
 			long finish = System.currentTimeMillis();
 			//fo.close();
 			System.out.println((finish - start));

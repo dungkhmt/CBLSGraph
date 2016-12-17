@@ -3,7 +3,7 @@ package localsearch.domainspecific.graphs.invariants;
 import localsearch.domainspecific.graphs.core.Edge;
 import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.core.UndirectedGraph;
-import localsearch.domainspecific.graphs.model.GraphInvariant;
+import localsearch.domainspecific.graphs.model.GInvariant;
 import localsearch.domainspecific.graphs.model.LSGraphManager;
 import localsearch.domainspecific.graphs.model.VarGraph;
 import localsearch.domainspecific.graphs.model.VarRootedTree;
@@ -11,7 +11,7 @@ import localsearch.domainspecific.graphs.model.VarRootedTree;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class InsertableEdgesVarRootedTree  implements GraphInvariant {
+public class InsertableEdgesVarRootedTree  implements GInvariant {
 	
 	private LSGraphManager	mgr;
 	private VarGraph[]		varGraphs;
@@ -85,7 +85,7 @@ public class InsertableEdgesVarRootedTree  implements GraphInvariant {
 	@Override
 	public void propagateAddEdge(VarRootedTree vt, Edge e) {
 		// TODO Auto-generated method stub
-		System.out.println(name() + "::propagateAddEdge(" + e.toString() + ")");
+		//System.out.println(name() + "::propagateAddEdge(" + e.toString() + ")");
 		if (this.vt != vt) {
 			return;
 		}

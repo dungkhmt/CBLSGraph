@@ -5,12 +5,12 @@ import java.util.HashSet;
 import localsearch.domainspecific.graphs.core.Edge;
 import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.core.UndirectedGraph;
-import localsearch.domainspecific.graphs.model.GraphInvariant;
+import localsearch.domainspecific.graphs.model.GInvariant;
 import localsearch.domainspecific.graphs.model.LSGraphManager;
 import localsearch.domainspecific.graphs.model.VarGraph;
 import localsearch.domainspecific.graphs.model.VarRootedTree;
 
-public class RemovableEdgesVarRootedTree implements GraphInvariant {
+public class RemovableEdgesVarRootedTree implements GInvariant {
     private LSGraphManager mgr;
     private VarGraph[] varGraphs;
     private VarRootedTree vt;
