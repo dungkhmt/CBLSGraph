@@ -12,15 +12,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.TreeSet;
 
-
-class Compare implements Comparator<GInvariant> {
-	
-	@Override
-	public int compare(GInvariant o1, GInvariant o2) {
-		return o1.getID() - o2.getID();
-	}
-	
-}
 public class LSGraphManager {
 	private ArrayList<VarGraph> varGraphs;
 	private ArrayList<GInvariant> graphInvariants;
@@ -91,5 +82,13 @@ public class LSGraphManager {
 		}	
 		initPropagate();
 	}
-	
+
+	class Compare implements Comparator<GInvariant> {
+
+		@Override
+		public int compare(GInvariant o1, GInvariant o2) {
+			return o1.getID() - o2.getID();
+		}
+
+	}
 }

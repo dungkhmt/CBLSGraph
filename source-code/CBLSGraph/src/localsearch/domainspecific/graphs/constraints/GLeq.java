@@ -1,5 +1,6 @@
 package localsearch.domainspecific.graphs.constraints;
 
+import localsearch.domainspecific.graphs.constraints.Leq.GLeqFunctionFunction;
 import localsearch.domainspecific.graphs.core.Edge;
 import localsearch.domainspecific.graphs.functions.GFunction;
 import localsearch.domainspecific.graphs.model.VarRootedTree;
@@ -11,9 +12,7 @@ public class GLeq implements GConstraint {
 		// f1 <= f2
 		_c = new GLeqFunctionFunction(f1, f2);
 	}
-	public GLeq(GFunction f, double v){
-		_c = new GLeqFunctionValue(f,v);
-	}
+
 	@Override
 	public int getAddEdgeDelta(VarRootedTree vt, Edge e) {
 		// TODO Auto-generated method stub

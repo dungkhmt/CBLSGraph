@@ -4,6 +4,7 @@
  */
 package localsearch.domainspecific.graphs.model;
 
+import localsearch.domainspecific.graphs.MainApp;
 import localsearch.domainspecific.graphs.core.Edge;
 import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.core.UndirectedGraph;
@@ -15,8 +16,5 @@ public class VarTree extends VarUndirectedGraph {
 
     public VarTree(LSGraphManager mgr, UndirectedGraph lub) {
         super(mgr, lub);
-        this.lub = lub;
-        Adj = new HashMap<Node, HashSet<Edge>>();
     }
-
 }

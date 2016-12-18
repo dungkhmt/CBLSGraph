@@ -48,13 +48,13 @@ public class TestVarRootedTree {
 			ReplacingEdgesVarRootedTree RPL = new ReplacingEdgesVarRootedTree(t);
 			mgr.close();
 			
-			Edge eii = Utility.randomSelect(I.getEdges());
-			System.out.println("inseted edge = " + eii.toString());
+			//Edge eii = Utility.randomSelect(I.getEdges());
+			//System.out.println("inseted edge = " + eii.toString());
 			//mgr.addEdge(t, eii);
-			t.addEdgePropagate(eii);
+			//t.addEdgePropagate(eii);
 			//t.print();
 			
-			if(true) return;
+			//if(true) return;
 			
 			
 			t.print();

@@ -1,12 +1,13 @@
 package localsearch.domainspecific.graphs.functions;
 
 import localsearch.domainspecific.graphs.core.Edge;
+import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.model.LSGraphManager;
 import localsearch.domainspecific.graphs.model.VarGraph;
 import localsearch.domainspecific.graphs.model.VarRootedTree;
 
 public class DegreeOfNode implements GFunction {
-	public Degree(VarGraph vg, Node u){
+	public DegreeOfNode(VarGraph vg, Node u){
 		
 	}
 	@Override

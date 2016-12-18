@@ -85,7 +85,7 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 	@Override
 	public void propagateAddEdge(VarRootedTree vt, Edge e) {
 		// TODO Auto-generated method stub
-		//System.out.println(name() + "::propagateAddEdge(" + e.toString() + ")");
+		System.out.println(name() + "::propagateAddEdge(" + e.toString() + ")");
 		if (this.vt != vt) {
 			return;
 		}
