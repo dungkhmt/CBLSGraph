@@ -8,12 +8,14 @@ public class Graph {
 	protected HashSet<Edge> edges;
 	protected HashMap<Integer, Node> mID2Node;
 	protected HashMap<Integer, Edge> mID2Edge;
-	
+	protected HashMap<Node, HashSet<Edge>> Adj;
+
 	public Graph() {
 		nodes = new HashSet<Node>();
 		edges = new HashSet<Edge>();
 		mID2Node = new HashMap<Integer, Node>();
 		mID2Edge = new HashMap<Integer, Edge>();
+		Adj = new HashMap<Node, HashSet<Edge>>();
 	}
 	
 	public int getNbrNodes() {
@@ -43,7 +45,15 @@ public class Graph {
 	public void setEdges(HashSet<Edge> edges) {
 		this.edges = edges;
 	}
-	
+
+	public HashSet<Edge> getAdj(Node u) {
+		return Adj.get(u);
+	}
+
+	public HashMap<Node, HashSet<Edge>> getAdj(){
+		return Adj;
+	}
+
 	public void addNode(Node node){
 		nodes.add(node);
 		mID2Node.put(node.getID(), node);

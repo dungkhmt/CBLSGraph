@@ -11,7 +11,7 @@ public class VarGraph extends BasicGraphElement {
 	protected LSGraphManager mgr;
 	protected HashSet<Node> nodes;
 	protected HashSet<Edge> edges;
-	
+	protected HashMap<Node, HashSet<Edge>> Adj;
 	//protected HashMap<Integer, Node> mID2Node;
 	//protected HashMap<Integer, Edge> mID2Edge;
 	
@@ -19,6 +19,7 @@ public class VarGraph extends BasicGraphElement {
 		super(0);
 		nodes = new HashSet<Node>();
 		edges = new HashSet<Edge>();
+		Adj = new HashMap<Node, HashSet<Edge>>();
 		this.lub = lub;
 		this.mgr = mgr;
 	}
@@ -68,5 +69,13 @@ public class VarGraph extends BasicGraphElement {
 
 	public Graph getLUB() {
 		return lub;
+	}
+
+	public HashSet<Edge> getAdj(Node u) {
+		return Adj.get(u);
+	}
+
+	public HashMap<Node, HashSet<Edge>> getAdj(){
+		return Adj;
 	}
 }
