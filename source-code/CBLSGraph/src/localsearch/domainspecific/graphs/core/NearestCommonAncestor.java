@@ -4,6 +4,8 @@ import javax.transaction.xa.Xid;
 
 import localsearch.domainspecific.graphs.model.VarRootedTree;
 
+import java.util.HashMap;
+
 public class NearestCommonAncestor {
 	
 	private VarRootedTree vt;
@@ -13,13 +15,14 @@ public class NearestCommonAncestor {
 	private int count;
 	private int[] p;
 	private int[] level;
-	private int[] pos;
+	//private int[] pos;
 	private int[][] rmq;
 	private int[] log2;
 	private int sizeBlock;
 	private int[][][] table;
 	private Node[] eulerTour;
-	
+	private HashMap<Node, Integer> pos;
+
 	public NearestCommonAncestor(VarRootedTree vt) {
 		this.vt = vt;
 		init();
@@ -30,12 +33,13 @@ public class NearestCommonAncestor {
 		eulerTour = new Node[2 * n - 1];
 		level = new int[2 * n - 1];
 		
-		int maxId = 0;
-		for (Node u : vt.getLUB().getNodes()) {
-			maxId = Math.max(maxId, u.getID());
-		}
-		pos = new int[maxId + 1];
-		
+//		int maxId = 0;
+//		for (Node u : vt.getLUB().getNodes()) {
+//			maxId = Math.max(maxId, u.getID());
+//		}
+//		pos = new int[maxId + 1];
+		pos = new HashMap<Node, Integer>();
+
 		log2 = new int[2 * n];
 		for (int i = 0, j = 0; i < log2.length; i++) {
 			if (i == (1 << (j + 1))) {
@@ -74,7 +78,7 @@ public class NearestCommonAncestor {
 	
 	private void DFS(Node u, int l) {
 		level[count] = l;
-		pos[u.getID()] = count;
+		pos.put(u, count);//pos[u.getID()] = count;
 		eulerTour[count++] = u;
 		Node fu = vt.getFatherNode(u);
 		if (vt.isNull()) {
@@ -128,11 +132,13 @@ public class NearestCommonAncestor {
 	}
 	
 	public Node nca(Node u, Node v) {
-		int i = pos[u.getID()];
-		int j = pos[v.getID()];
+		int i = pos.get(u);//pos[u.getID()];
+		int j = pos.get(v);//pos[v.getID()];
 		if (i > j) {
-			j = pos[u.getID()];
-			i = pos[v.getID()];
+			//j = pos[u.getID()];
+			//i = pos[v.getID()];
+			int tmp = i;
+			i = j; j = tmp;
 		}
 		int bi = i / sizeBlock;
 		int bj = j / sizeBlock;
