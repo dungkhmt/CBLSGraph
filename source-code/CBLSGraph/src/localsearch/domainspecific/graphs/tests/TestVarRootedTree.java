@@ -19,7 +19,7 @@ public class TestVarRootedTree {
 
 	public void test(){
 		try{
-			Scanner in = new Scanner(new File("data/g.txt"));
+			Scanner in = new Scanner(new File("source-code/CBLSGraph/data/g.txt"));
 			HashMap<Integer, Node> m = new HashMap<Integer, Node>();
 			UndirectedGraph ug = new UndirectedGraph();
 			while(in.hasNext()){
@@ -46,13 +46,13 @@ public class TestVarRootedTree {
 			InsertableEdgesVarRootedTree I = new InsertableEdgesVarRootedTree(t);
 			RemovableEdgesVarRootedTree R = new RemovableEdgesVarRootedTree(t);
 			ReplacingEdgesVarRootedTree RPL = new ReplacingEdgesVarRootedTree(t);
-			mgr.close();
+			mgr.close(); // duoc goi o day
 			
 			//Edge eii = Utility.randomSelect(I.getEdges());
 			//System.out.println("inseted edge = " + eii.toString());
-			//mgr.addEdge(t, eii);
-			//t.addEdgePropagate(eii);
-			//t.print();
+			//mgr.addEdge(t.txt, eii);
+			//t.txt.addEdgePropagate(eii);
+			//t.txt.print();
 			
 			//if(true) return;
 			
@@ -63,19 +63,19 @@ public class TestVarRootedTree {
 			
 			java.util.Random rand = new java.util.Random();
 			HashSet<Edge> RP = new HashSet<Edge>();
-			for(int it = 0; it < 10000; it++){
+			for(int it = 0; it < 10; it++){
 				int choice = rand.nextInt(3);
 				if(choice == 0){// add edge
 					Edge e = Utility.randomSelect(I.getEdges());
 					if(e != null){
 						t.addEdgePropagate(e);
-						System.out.println(it + ", addEdge(" + e.toString() + "), t = "); t.print();
+						System.out.println(it + ", addEdge(" + e.toString() + "), t.txt = "); t.print();
 					}
 				}else if(choice == 1){// remove edge
 					Edge e = Utility.randomSelect(R.getEdges());
 					if(e != null){
 						t.removeEdgePropagate(e);
-						System.out.println(it + ", removeEdge(" + e.toString() + "), t = "); t.print();
+						System.out.println(it + ", removeEdge(" + e.toString() + "), t.txt = "); t.print();
 					}
 				}else if(choice == 2){// replace
 					Edge ei = Utility.randomSelect(RPL.getEdges());
@@ -84,7 +84,7 @@ public class TestVarRootedTree {
 						Edge eo = Utility.randomSelect(RP);
 						if(eo != null){
 							t.replaceEdgePropagate(eo, ei);
-							System.out.println(it + ", replaceEdge(" + eo.toString() + "," + ei.toString() + "), t = "); t.print();
+							System.out.println(it + ", replaceEdge(" + eo.toString() + "," + ei.toString() + "), t.txt = "); t.print();
 						}
 					}
 				}
