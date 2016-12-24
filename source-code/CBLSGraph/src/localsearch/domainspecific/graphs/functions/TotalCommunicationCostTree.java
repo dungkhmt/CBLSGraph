@@ -126,7 +126,6 @@ public class TotalCommunicationCostTree implements GFunction {
 	@Override
 	public void propagateAddEdge(VarRootedTree vt, Edge e) {
 		// TODO Auto-generated method stub
-		System.out.println("add edge");
 		initPropagate();
 	}
 	@Override
