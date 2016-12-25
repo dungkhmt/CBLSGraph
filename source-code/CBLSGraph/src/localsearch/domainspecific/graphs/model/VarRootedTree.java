@@ -59,9 +59,7 @@ public class VarRootedTree extends VarTree {
 		return nca(u, v) == u;
 	}
 	
-	public boolean isNull(){
-		return edges.size() == 0;
-	}
+
 	
 	public String name() { 
 		return "VarRootedTree";
@@ -183,18 +181,18 @@ public class VarRootedTree extends VarTree {
 	}
 
 	public void removeEdgePropagate(Edge e){
-		mgr.removeEdge(this, e);
 		removeEdge(e);
+		mgr.removeEdge(this, e);
 	}
 	
 	public void addEdgePropagate(Edge e){
-		mgr.addEdge(this, e);
 		addEdge(e);
+		mgr.addEdge(this, e);
 	}
 	
 	public void replaceEdgePropagate(Edge eo, Edge ei){
-		mgr.replaceEdge(this, eo, ei);
 		replaceEdge(eo, ei);
+		mgr.replaceEdge(this, eo, ei);
 	}
 	
 	public static void main(String[] args) {
