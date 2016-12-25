@@ -46,7 +46,11 @@ public class VarGraph extends BasicGraphElement {
 		edges.remove(e);
 		return true;
 	}
-	
+
+	public boolean isNull(){
+		return edges.size() == 0;
+	}
+
 	public boolean contains(Node v){
 		return nodes.contains(v);
 	}
