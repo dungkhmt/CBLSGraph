@@ -2,10 +2,8 @@ package localsearch.domainspecific.graphs.invariants;
 
 import localsearch.domainspecific.graphs.core.Edge;
 import localsearch.domainspecific.graphs.core.Node;
-import localsearch.domainspecific.graphs.model.GInvariant;
 import localsearch.domainspecific.graphs.model.LSGraphManager;
 import localsearch.domainspecific.graphs.model.VarGraph;
-import localsearch.domainspecific.graphs.model.VarRootedTree;
 
 import java.util.HashMap;
 
@@ -62,7 +60,7 @@ public class NodeDegree implements GInvariant {
 	}
 
 	@Override
-	public void propagateAddEdge(VarRootedTree vt, Edge e) {
+	public void propagateAddEdge(VarGraph vt, Edge e) {
 		for (Node u : vt.getLUB().getNodes()) {
 			if (e.contains(u)) _degrees.replace(u, _degrees.get(u) +1);
 		}
@@ -70,7 +68,7 @@ public class NodeDegree implements GInvariant {
 	}
 
 	@Override
-	public void propagateRemoveEdge(VarRootedTree vt, Edge e) {
+	public void propagateRemoveEdge(VarGraph vt, Edge e) {
 		for (Node u : vt.getLUB().getNodes()) {
 			if (e.contains(u)) _degrees.replace(u, _degrees.get(u) -1);
 		}
@@ -78,7 +76,7 @@ public class NodeDegree implements GInvariant {
 	}
 
 	@Override
-	public void propagateReplaceEdge(VarRootedTree vt, Edge eo, Edge ei) {
+	public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
 		for (Node u : vt.getLUB().getNodes()) {
 			int tmp = _degrees.get(u);
 			if (ei.contains(u)) tmp++;

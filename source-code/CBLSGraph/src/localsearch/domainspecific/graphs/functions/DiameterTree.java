@@ -125,25 +125,25 @@ public class DiameterTree implements GFunction {
     }
 
     @Override
-    public void propagateAddEdge(VarRootedTree vt, Edge e) {
+    public void propagateAddEdge(VarGraph vt, Edge e) {
         // TODO Auto-generated method stub
         initComputation();
     }
 
     @Override
-    public void propagateRemoveEdge(VarRootedTree vt, Edge e) {
+    public void propagateRemoveEdge(VarGraph vt, Edge e) {
         // TODO Auto-generated method stub
         initComputation();
     }
 
     @Override
-    public void propagateReplaceEdge(VarRootedTree vt, Edge eo, Edge ei) {
+    public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
         // TODO Auto-generated method stub
         initComputation();
     }
 
     @Override
-    public double getAddEdgeDelta(VarRootedTree vt, Edge e) {
+    public double getAddEdgeDelta(VarGraph vt, Edge e) {
         // TODO Auto-generated method stub
         Node u = e.getBegin();
         if (!vt.contains(u)) {
@@ -158,7 +158,7 @@ public class DiameterTree implements GFunction {
     }
 
     @Override
-    public double getRemoveEdgeDelta(VarRootedTree vt, Edge e) {
+    public double getRemoveEdgeDelta(VarGraph vt, Edge e) {
         // TODO Auto-generated method stub
         Data du = dataOfNodes.get(e.getBegin());
         Data dv = dataOfNodes.get(e.getEnd());
@@ -171,7 +171,7 @@ public class DiameterTree implements GFunction {
     }
 
     @Override
-    public double getReplaceEdgeDelta(VarRootedTree vt, Edge ei, Edge eo) {
+    public double getReplaceEdgeDelta(VarGraph vt, Edge ei, Edge eo) {
         // TODO Auto-generated method stub
         Data tmp;
         Node uo = eo.getBegin();
@@ -247,7 +247,7 @@ public class DiameterTree implements GFunction {
         return 0;
     }
 
-    class Data {
+    private class Data {
         Node v;
         double diameterA;
         double diameterB;
@@ -378,5 +378,9 @@ public class DiameterTree implements GFunction {
             }
             return val;
         }
+    }
+
+    public static void main(String[] args) {
+
     }
 }

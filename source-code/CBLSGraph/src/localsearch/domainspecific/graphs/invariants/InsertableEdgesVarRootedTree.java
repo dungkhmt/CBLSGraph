@@ -1,9 +1,8 @@
 package localsearch.domainspecific.graphs.invariants;
 
 import localsearch.domainspecific.graphs.core.Edge;
+import localsearch.domainspecific.graphs.core.Graph;
 import localsearch.domainspecific.graphs.core.Node;
-import localsearch.domainspecific.graphs.core.UndirectedGraph;
-import localsearch.domainspecific.graphs.model.GInvariant;
 import localsearch.domainspecific.graphs.model.LSGraphManager;
 import localsearch.domainspecific.graphs.model.VarGraph;
 import localsearch.domainspecific.graphs.model.VarRootedTree;
@@ -64,7 +63,7 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 	public void initPropagate(){
 		System.out.println(name() + "::initPropagate");
 		insertableEdges.clear();
-		UndirectedGraph ug = vt.getLUB();
+		Graph ug = vt.getLUB();
 		for(Node v : vt.getNodes()) {
 			insertableEdgesOfInternalNode.put(v, new HashSet<Edge>());
 			HashSet<Edge> sv = insertableEdgesOfInternalNode.get(v);
@@ -83,7 +82,7 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 	}
 	
 	@Override
-	public void propagateAddEdge(VarRootedTree vt, Edge e) {
+	public void propagateAddEdge(VarGraph vt, Edge e) {
 		// TODO Auto-generated method stub
 		System.out.println(name() + "::propagateAddEdge(" + e.toString() + ")");
 		if (this.vt != vt) {
@@ -92,21 +91,13 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 		
 		Node leaf = e.getBegin();
 		Node other = e.getEnd();
-		if (vt.contains(leaf)) {
+		VarRootedTree vrt = (VarRootedTree) vt;
+		if (vrt.getFatherNode(other) == leaf) {
 			leaf = e.getEnd();
 			other = e.getBegin();
 		}
-		UndirectedGraph lub = vt.getLUB();
+		Graph lub = vt.getLUB();
 
-		if (vt.contains(leaf) && vt.contains(other)) {
-			System.out.println(name() + "::propagateAddEdge" + e.toString() + " exception: two endpoints are belongs to the tree, this will create a cycle");
-			System.exit(-1);
-		}
-		if (!vt.contains(leaf) && !vt.contains(other)) {
-			System.out.println(name() + "::propagateAddEdge" + e.toString() + " exception: two endpoints are not belongs to the tree, this will create two connected components");
-			System.exit(-1);
-		}
-		
 		for(Edge ei : insertableEdgesOfExternalNode.get(leaf)) {
 			Node u = ei.otherNode(leaf);
 			insertableEdges.remove(ei);
@@ -130,7 +121,7 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 	}
 
 	@Override
-	public void propagateRemoveEdge(VarRootedTree vt, Edge e) {
+	public void propagateRemoveEdge(VarGraph vt, Edge e) {
 		// TODO Auto-generated method stub
 		System.out.println(name() + "::propagateRemoveEdge(" + e.toString() + ")");
 		if(this.vt != vt) {
@@ -139,20 +130,11 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 		
 		Node fv = e.getBegin();
 		Node cv = e.getEnd();
-		if(!vt.contains(e)) {
-			System.out.println(name() + "::propagateRemoveEdge(" + fv.getID() + "," + cv.getID() + ") -> exception: this edge does not belong to the tree");
-			System.exit(-1);
-		}
 		
-		UndirectedGraph lub = vt.getLUB();
-		if(vt.getFatherNode(cv) != fv) {
+		Graph lub = vt.getLUB();
+		if(vt.contains(cv)) {
 			fv = e.getEnd();
 			cv = e.getBegin();
-		}
-
-		if (vt.getAdj().get(cv).size() != 1) {
-			System.out.println(name() + "::propagateRemoveEdge(" + fv.getID() + "," + cv.getID() + ") -> exception: this edge is not a leaf of the tree");
-			System.exit(-1);		
 		}
 		
 		for (Edge ei : insertableEdgesOfInternalNode.get(cv)) {
@@ -166,7 +148,6 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 		HashSet<Edge> sv = insertableEdgesOfExternalNode.get(cv);
 		for (Edge ei : lub.getAdj(cv)) {
 			Node u = ei.otherNode(cv);
-			//System.out.println(cv + " " + u);
 			if (vt.contains(u)) {
 				sv.add(ei);
 				insertableEdges.add(ei);
@@ -176,7 +157,7 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 	}
 
 	@Override
-	public void propagateReplaceEdge(VarRootedTree vt, Edge eo, Edge ei) {
+	public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
 		// TODO Auto-generated method stub
 		// DO NOTHING
 		System.out.println(name() + "::propagateReplaceEdge(" + eo.toString() + "," + ei.toString() + ")");

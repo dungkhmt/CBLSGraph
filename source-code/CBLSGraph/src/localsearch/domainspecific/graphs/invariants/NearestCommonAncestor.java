@@ -1,13 +1,20 @@
-package localsearch.domainspecific.graphs.core;
+package localsearch.domainspecific.graphs.invariants;
 
 import javax.transaction.xa.Xid;
 
+import localsearch.domainspecific.graphs.core.Edge;
+import localsearch.domainspecific.graphs.core.Node;
+import localsearch.domainspecific.graphs.model.LSGraphManager;
+import localsearch.domainspecific.graphs.model.VarGraph;
 import localsearch.domainspecific.graphs.model.VarRootedTree;
 
 import java.util.HashMap;
 
-public class NearestCommonAncestor {
-	
+public class NearestCommonAncestor implements GInvariant{
+
+	private int id;
+	private VarGraph[] varGraphs;
+	private LSGraphManager mgr;
 	private VarRootedTree vt;
 	
 	private int n;
@@ -15,7 +22,6 @@ public class NearestCommonAncestor {
 	private int count;
 	private int[] p;
 	private int[] level;
-	//private int[] pos;
 	private int[][] rmq;
 	private int[] log2;
 	private int sizeBlock;
@@ -25,10 +31,13 @@ public class NearestCommonAncestor {
 
 	public NearestCommonAncestor(VarRootedTree vt) {
 		this.vt = vt;
-		init();
+		this.mgr = vt.getLSGraphManager();
+		varGraphs = new VarGraph[1];
+		varGraphs[0] = vt;
+		mgr.post(this);
 	}
 	
-	private void init() {
+	public void initPropagate() {
 		n = vt.getLUB().getNbrNodes();
 		eulerTour = new Node[2 * n - 1];
 		level = new int[2 * n - 1];
@@ -74,6 +83,8 @@ public class NearestCommonAncestor {
 		m = (2 * n - 2) / sizeBlock + 1;
 		rmq = new int[m][log2[m] + 1];
 		p = new int[m];
+
+		makeNCA();
 	}
 	
 	private void DFS(Node u, int l) {
@@ -166,16 +177,39 @@ public class NearestCommonAncestor {
 		}
 		return eulerTour[res];
 	}
-	
-	public void updateWhenRemove(Node u) {
+
+	@Override
+	public VarGraph[] getVarGraphs() {
+		return varGraphs;
+	}
+
+	@Override
+	public LSGraphManager getLSGraphManager() {
+		return mgr;
+	}
+
+	@Override
+	public void setID(int id) {
+		this.id = id;
+	}
+
+	@Override
+	public int getID() {
+		return id;
+	}
+
+	@Override
+	public void propagateAddEdge(VarGraph vt, Edge e) {
 		makeNCA();
 	}
-	
-	public void updateWhenAdd(Node leaf, Node other) {
+
+	@Override
+	public void propagateRemoveEdge(VarGraph vt, Edge e) {
 		makeNCA();
 	}
-	
-	public void updateWhenReplace(Node u1, Node v1, Node u2, Node v2) {
+
+	@Override
+	public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
 		makeNCA();
 	}
 }

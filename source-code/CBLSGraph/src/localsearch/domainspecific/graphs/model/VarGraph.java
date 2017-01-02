@@ -25,6 +25,7 @@ public class VarGraph extends BasicGraphElement {
 	}
 	
 	public boolean addEdge(Edge e){
+		System.out.println("VarGraph");
 		edges.add(e);
 		Node u = e.getBegin();
 		Node v = e.getEnd();
@@ -45,6 +46,22 @@ public class VarGraph extends BasicGraphElement {
 	public boolean removeEdge(Edge e){
 		edges.remove(e);
 		return true;
+	}
+
+	public void removeEdgePropagate(Edge e){
+		removeEdge(e);
+		mgr.removeEdge(this, e);
+	}
+
+	public void addEdgePropagate(Edge e){
+		addEdge(e);
+		mgr.addEdge(this, e);
+	}
+
+	public void replaceEdgePropagate(Edge eo, Edge ei){
+		removeEdge(eo);
+		addEdge(ei);
+		mgr.replaceEdge(this, eo, ei);
 	}
 
 	public boolean isNull(){

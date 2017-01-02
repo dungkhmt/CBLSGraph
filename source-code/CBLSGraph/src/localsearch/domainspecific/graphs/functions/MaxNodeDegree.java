@@ -3,10 +3,8 @@ package localsearch.domainspecific.graphs.functions;
 import localsearch.domainspecific.graphs.core.Edge;
 import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.invariants.NodeDegree;
-import localsearch.domainspecific.graphs.invariants.Pair;
 import localsearch.domainspecific.graphs.model.LSGraphManager;
 import localsearch.domainspecific.graphs.model.VarGraph;
-import localsearch.domainspecific.graphs.model.VarRootedTree;
 
 import java.util.*;
 
@@ -21,7 +19,7 @@ public class MaxNodeDegree implements GFunction {
 	private NodeDegree _nodeDegree;
 	private Node[] _maxNodes;
 	private HashMap<Integer,Node> _x;
-	private TreeSet<localsearch.domainspecific.graphs.invariants.Pair> _tree;
+	private TreeSet<Pair> _tree;
 	private int _id;
 
 	public MaxNodeDegree(VarGraph vg, HashSet<Node> S, NodeDegree nd){
@@ -100,21 +98,21 @@ public class MaxNodeDegree implements GFunction {
 	}
 
 	@Override
-	public void propagateAddEdge(VarRootedTree vt, Edge e) {
+	public void propagateAddEdge(VarGraph vt, Edge e) {
 		updateNode(e.getBegin(),1);
 		updateNode(e.getEnd(),1);
 		updateMaxNodes();
 	}
 
 	@Override
-	public void propagateRemoveEdge(VarRootedTree vt, Edge e) {
+	public void propagateRemoveEdge(VarGraph vt, Edge e) {
 		updateNode(e.getBegin(),-1);
 		updateNode(e.getEnd(),-1);
 		updateMaxNodes();
 	}
 
 	@Override
-	public void propagateReplaceEdge(VarRootedTree vt, Edge eo, Edge ei) {
+	public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
 		updateNode(eo.getBegin(),-1);
 		updateNode(ei.getBegin(),1);
 		updateNode(eo.getEnd(),-1);
@@ -123,7 +121,7 @@ public class MaxNodeDegree implements GFunction {
 	}
 
 	@Override
-	public double getAddEdgeDelta(VarRootedTree vt, Edge e) {
+	public double getAddEdgeDelta(VarGraph vt, Edge e) {
 		double tmp = _value;
 		if (_nodes.contains(e.getBegin())) tmp = Math.max(tmp,_nodeDegree.getDegree(e.getBegin())+1);
 		if (_nodes.contains(e.getEnd())) tmp = Math.max(tmp,_nodeDegree.getDegree(e.getEnd())+1);
@@ -131,7 +129,7 @@ public class MaxNodeDegree implements GFunction {
 	}
 
 	@Override
-	public double getRemoveEdgeDelta(VarRootedTree vt, Edge e) {
+	public double getRemoveEdgeDelta(VarGraph vt, Edge e) {
 		double tmp = _value;
 		int tt = 0;
 		for (Node u : _maxNodes) {
@@ -145,7 +143,7 @@ public class MaxNodeDegree implements GFunction {
 	}
 
 	@Override
-	public double getReplaceEdgeDelta(VarRootedTree vt, Edge ei, Edge eo) {
+	public double getReplaceEdgeDelta(VarGraph vt, Edge ei, Edge eo) {
 		double tmp = _value;
 		int tt;
 		for (Node u : _maxNodes) {
@@ -163,4 +161,17 @@ public class MaxNodeDegree implements GFunction {
 		return _value;
 	}
 
+	/**
+     * Created by tung on 21/12/2016.
+     */
+
+    private class Pair {
+        public int first;
+        public int second;
+
+        public Pair(int first, int second) {
+            this.first = first;
+            this.second = second;
+        }
+    }
 }

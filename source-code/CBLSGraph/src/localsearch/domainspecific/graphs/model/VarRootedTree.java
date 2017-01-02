@@ -2,15 +2,11 @@ package localsearch.domainspecific.graphs.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
 import java.util.Scanner;
 
 import localsearch.domainspecific.graphs.core.Edge;
-import localsearch.domainspecific.graphs.core.LowestCommonAncestor;
-import localsearch.domainspecific.graphs.core.NearestCommonAncestor;
+import localsearch.domainspecific.graphs.invariants.NearestCommonAncestor;
 import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.core.UndirectedGraph;
 import localsearch.domainspecific.graphs.invariants.InsertableEdgesVarRootedTree;
@@ -20,7 +16,7 @@ public class VarRootedTree extends VarTree {
 	private Node root; 
 	private HashMap<Node, Node> fatherNode;
 	private HashMap<Node, Edge> fatherEdge;
-	NearestCommonAncestor NCA;
+	private NearestCommonAncestor NCA;
 	
 	public VarRootedTree(LSGraphManager mgr, UndirectedGraph lub, Node root){
 		super(mgr, lub);
@@ -59,7 +55,9 @@ public class VarRootedTree extends VarTree {
 		return nca(u, v) == u;
 	}
 	
-
+	public NearestCommonAncestor getNCA() {
+		return NCA;
+	}
 	
 	public String name() { 
 		return "VarRootedTree";
@@ -83,22 +81,13 @@ public class VarRootedTree extends VarTree {
 			}
 		}
 	}
-	
+
 	public boolean removeEdge(Edge e){
-		if (!contains(e)) {
-			System.out.println(name() + "::removeEdge(" + e.getBegin().getID() + "," + e.getEnd().getID() + ") -> exception: this edge does not belong to the tree");
-			return false;
-		}
-		
 		Node fv = e.getBegin();
 		Node cv = e.getEnd();
 		if(fatherNode.get(cv) != fv){
 			fv = e.getEnd();
 			cv = e.getBegin();
-		}
-		if(Adj.get(cv).size() != 1){
-			System.out.println(name() + "::removeEdge(" + fv.getID() + "," + cv.getID() + ") -> exception: this edge is not a leaf of the tree");
-			return false;	
 		}
 		super.removeEdge(e);
 		if (nodes.isEmpty()) {
@@ -106,32 +95,19 @@ public class VarRootedTree extends VarTree {
 		}
 		fatherNode.remove(cv);
 		fatherEdge.remove(cv);
-		NCA.updateWhenRemove(cv);
 		return true;
 	}
-	
+
 	public boolean addEdge(Edge e){
-		if (contains(e)) {
-			return false;
-		}
 		Node leaf = e.getBegin();
 		Node other = e.getEnd();
 		if(contains(leaf)){
 			leaf = e.getEnd();
 			other = e.getBegin();
 		}
-		if (!contains(other)) {
-			System.out.println(name() + "::addEdge" + e.toString() + " exception: two endpoints are not belongs to the tree, this will create two connected components");
-			return false;
-		}
-		if(contains(leaf)){
-			System.out.println(name() + "::addEdge" + e.toString() + " exception: two endpoints are belongs to the tree, this will create a cycle");
-			return false;
-		}
 		super.addEdge(e);
 		fatherNode.put(leaf, other);
 		fatherEdge.put(leaf, e);
-		NCA.updateWhenAdd(leaf, other);
 		return true;
 	}
 	
@@ -148,25 +124,16 @@ public class VarRootedTree extends VarTree {
 	}
 	
 	public boolean replaceEdge(Edge eo, Edge ei){
-		if (!(contains(eo) && !contains(ei))) {
-			return false;
-		}
 		Node uo = eo.getBegin();
 		Node vo = eo.getEnd();
 		Node ui = ei.getBegin();
 		Node vi = ei.getEnd();
-		if (!contains(uo) || !contains(ui) || !contains(vo) || !contains(vi)) {
-			return false;
-		}
 		if (fatherNode.get(uo) == vo) {
 			uo = eo.getEnd();
 			vo = eo.getBegin();
 		}
 		Node x = nca(ui, vo);
 		Node y = nca(vi, vo);
-		if ((x == vo ? 1 : 0) + (y == vo ? 1 : 0) != 1) {
-			return false;
-		}
 		if (x == vo) {
 			ui = ei.getEnd();
 			vi = ei.getBegin();
@@ -176,21 +143,75 @@ public class VarRootedTree extends VarTree {
 		reverseFather(vi, vo);
 		fatherNode.put(vi, ui);
 		fatherEdge.put(vi, ei);
-		NCA.updateWhenReplace(ui, vi, uo, vo);
 		return true;
 	}
 
 	public void removeEdgePropagate(Edge e){
+		if (!contains(e)) {
+			System.out.println(name() + "::removeEdge(" + e.getBegin().getID() + "," + e.getEnd().getID() + ") -> exception: this edge does not belong to the tree");
+			System.exit(-1);
+		}
+
+		Node fv = e.getBegin();
+		Node cv = e.getEnd();
+		if(fatherNode.get(cv) != fv){
+			fv = e.getEnd();
+			cv = e.getBegin();
+		}
+		if(Adj.get(cv).size() != 1){
+			System.out.println(name() + "::removeEdge(" + fv.getID() + "," + cv.getID() + ") -> exception: this edge is not a leaf of the tree");
+			System.exit(-1);
+		}
 		removeEdge(e);
 		mgr.removeEdge(this, e);
 	}
 	
 	public void addEdgePropagate(Edge e){
+		if (contains(e)) {
+			System.out.println(name() + "::addEdge" + e.toString() + " this edge does belong to the tree");
+			System.exit(-1);
+		}
+		Node leaf = e.getBegin();
+		Node other = e.getEnd();
+		if(contains(leaf)){
+			leaf = e.getEnd();
+			other = e.getBegin();
+		}
+		if (!contains(other)) {
+			System.out.println(name() + "::addEdge" + e.toString() + " exception: two endpoints are not belongs to the tree, this will create two connected components");
+			System.exit(-1);
+		}
+		if(contains(leaf)){
+			System.out.println(name() + "::addEdge" + e.toString() + " exception: two endpoints are belongs to the tree, this will create a cycle");
+			System.exit(-1);
+		}
 		addEdge(e);
 		mgr.addEdge(this, e);
 	}
 	
 	public void replaceEdgePropagate(Edge eo, Edge ei){
+		if (!(contains(eo) && !contains(ei))) {
+			System.out.println(name() + "::replaceEdge" + ei.toString() + " this edge does belong to the tree, or " + eo + " this edge does not belong to the tree");
+			System.exit(-1);
+		}
+		Node uo = eo.getBegin();
+		Node vo = eo.getEnd();
+		Node ui = ei.getBegin();
+		Node vi = ei.getEnd();
+		if (!contains(uo) || !contains(ui) || !contains(vo) || !contains(vi)) {
+			System.out.println(name() + "::replaceEdge " + "(" + eo + ", " + ei + ") " + " there is some nodes that do not belong the tree");
+			System.exit(-1);
+		}
+		if (fatherNode.get(uo) == vo) {
+			uo = eo.getEnd();
+			vo = eo.getBegin();
+		}
+		Node x = nca(ui, vo);
+		Node y = nca(vi, vo);
+		if ((x == vo ? 1 : 0) + (y == vo ? 1 : 0) != 1) {
+			System.out.println(name() + "::replaceEdge " + "(" + eo + ", " + ei + ") " + " this will create two connected components and a cycle");
+			System.exit(-1);
+		}
 		replaceEdge(eo, ei);
 		mgr.replaceEdge(this, eo, ei);
 	}

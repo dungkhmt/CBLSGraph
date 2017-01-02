@@ -73,35 +73,35 @@ public class GCost implements GFunction {
 	}
 
 	@Override
-	public void propagateAddEdge(VarRootedTree vt, Edge e) {
+	public void propagateAddEdge(VarGraph vt, Edge e) {
 		_value += e.getWeight(_idxWeight);
 
 	}
 
 	@Override
-	public void propagateRemoveEdge(VarRootedTree vt, Edge e) {
+	public void propagateRemoveEdge(VarGraph vt, Edge e) {
 		_value -= e.getWeight(_idxWeight);
 
 	}
 
 	@Override
-	public void propagateReplaceEdge(VarRootedTree vt, Edge eo, Edge ei) {
+	public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
 		_value = _value + ei.getWeight(_idxWeight) - eo.getWeight(_idxWeight);
 
 	}
 
 	@Override
-	public double getAddEdgeDelta(VarRootedTree vt, Edge e) {
+	public double getAddEdgeDelta(VarGraph vt, Edge e) {
 		return e.getWeight(_idxWeight);
 	}
 
 	@Override
-	public double getRemoveEdgeDelta(VarRootedTree vt, Edge e) {
+	public double getRemoveEdgeDelta(VarGraph vt, Edge e) {
 		return - e.getWeight(_idxWeight);
 	}
 
 	@Override
-	public double getReplaceEdgeDelta(VarRootedTree vt, Edge ei, Edge eo) {
+	public double getReplaceEdgeDelta(VarGraph vt, Edge ei, Edge eo) {
 		return ei.getWeight(_idxWeight) - eo.getWeight(_idxWeight);
 	}
 

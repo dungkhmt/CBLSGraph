@@ -21,14 +21,24 @@ public class BasicGraphElement {
 		ID = id;
 	}
 
-	public double[] getWeight() {
+	public double[] getWeights() {
 		return weight;
 	}
+
+	public double getWeight() {
+		return weight != null ? weight[0] : 1;
+	}
+
 	public double getWeight(int idx){
-		return weight[idx];
+		return idx >= 0 && idx < weight.length ? weight[idx] : 1;
 	}
 	
-	public void setWeight(double[] weight) {
+	public void setWeights(double[] weight) {
 		this.weight = weight;
+	}
+
+	public void setWeight(double w) {
+		this.weight = new double[1];
+		this.weight[0] = w;
 	}
 }

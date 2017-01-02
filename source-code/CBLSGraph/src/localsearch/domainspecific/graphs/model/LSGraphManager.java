@@ -6,6 +6,7 @@
 package localsearch.domainspecific.graphs.model;
 
 import localsearch.domainspecific.graphs.core.Edge;
+import localsearch.domainspecific.graphs.invariants.GInvariant;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -35,20 +36,20 @@ public class LSGraphManager {
 		graphInvariants.add(gi);
 	}
 	
-	public void addEdge(VarRootedTree vt, Edge e){
+	public void addEdge(VarGraph vt, Edge e){
 		TreeSet<GInvariant> s = _map.get(vt);
 		for(GInvariant gi : s){
 			gi.propagateAddEdge(vt, e);
 		}
 		
 	}
-	public void removeEdge(VarRootedTree vt, Edge e){
+	public void removeEdge(VarGraph vt, Edge e){
 		TreeSet<GInvariant> s = _map.get(vt);
 		for(GInvariant gi : s){
 			gi.propagateRemoveEdge(vt, e);
 		}
 	}
-	public void replaceEdge(VarRootedTree vt, Edge eo, Edge ei){
+	public void replaceEdge(VarGraph vt, Edge eo, Edge ei){
 		TreeSet<GInvariant> s = _map.get(vt);
 		for(GInvariant gi : s){
 			gi.propagateReplaceEdge(vt, eo, ei);

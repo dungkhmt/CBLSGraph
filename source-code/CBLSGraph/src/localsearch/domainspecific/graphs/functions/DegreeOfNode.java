@@ -54,38 +54,38 @@ public class DegreeOfNode implements GFunction {
 	}
 
 	@Override
-	public void propagateAddEdge(VarRootedTree vt, Edge e) {
+	public void propagateAddEdge(VarGraph vt, Edge e) {
 		if (e.contains(_node)) _value++;
 
 	}
 
 	@Override
-	public void propagateRemoveEdge(VarRootedTree vt, Edge e) {
+	public void propagateRemoveEdge(VarGraph vt, Edge e) {
 		if (e.contains(_node)) _value--;
 
 	}
 
 	@Override
-	public void propagateReplaceEdge(VarRootedTree vt, Edge eo, Edge ei) {
+	public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
 		if (ei.contains(_node)) _value++;
 		if (eo.contains(_node)) _value--;
 
 	}
 
 	@Override
-	public double getAddEdgeDelta(VarRootedTree vt, Edge e) {
+	public double getAddEdgeDelta(VarGraph vt, Edge e) {
 		if (e.contains(_node)) return 1;
 		return 0;
 	}
 
 	@Override
-	public double getRemoveEdgeDelta(VarRootedTree vt, Edge e) {
+	public double getRemoveEdgeDelta(VarGraph vt, Edge e) {
 		if (e.contains(_node)) return -1;
 		return 0;
 	}
 
 	@Override
-	public double getReplaceEdgeDelta(VarRootedTree vt, Edge ei, Edge eo) {
+	public double getReplaceEdgeDelta(VarGraph vt, Edge ei, Edge eo) {
 		int tmp = 0;
 		if (ei.contains(_node)) tmp++;
 		if (eo.contains(_node)) tmp--;
