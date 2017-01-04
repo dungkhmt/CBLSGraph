@@ -61,7 +61,7 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 
 	@Override
 	public void initPropagate(){
-		System.out.println(name() + "::initPropagate");
+		//System.out.println(name() + "::initPropagate");
 		insertableEdges.clear();
 		Graph ug = vt.getLUB();
 		for(Node v : vt.getNodes()) {

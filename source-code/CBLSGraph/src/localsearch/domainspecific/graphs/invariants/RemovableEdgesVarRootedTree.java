@@ -56,7 +56,7 @@ public class RemovableEdgesVarRootedTree implements GInvariant {
     @Override
     public void initPropagate() {
         // TODO Auto-generated method stub
-        System.out.println(name() + "::initPropagate");
+        //System.out.println(name() + "::initPropagate");
         removableEdges.clear();
         for (Node v : vt.getNodes()) {
             if (v != vt.root() && vt.getAdj().get(v).size() == 1) {

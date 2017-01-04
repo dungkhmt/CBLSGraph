@@ -7,6 +7,7 @@ import java.util.Scanner;
 import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.core.Edge;
 import localsearch.domainspecific.graphs.core.UndirectedGraph;
+import localsearch.domainspecific.graphs.functions.DiameterTree;
 import localsearch.domainspecific.graphs.invariants.InsertableEdgesVarRootedTree;
 import localsearch.domainspecific.graphs.invariants.RemovableEdgesVarRootedTree;
 import localsearch.domainspecific.graphs.invariants.ReplacingEdgesVarRootedTree;
@@ -22,23 +23,31 @@ public class TestVarRootedTree {
 			Scanner in = new Scanner(new File("source-code/CBLSGraph/data/g.txt"));
 			HashMap<Integer, Node> m = new HashMap<Integer, Node>();
 			UndirectedGraph ug = new UndirectedGraph();
-			while(in.hasNext()){
-				int vid = in.nextInt();
-				if(vid == -1) break;
-				Node v = new Node(vid);
-				m.put(vid, v);
+			int n = 20;
+			for (int i = 1; i <= n; i++) {
+				for (int j = 1; j <= n; j++) {
+					if (i != j) {
+						ug.addEdgeByID((i - 1) * n + j, i, j);
+					}
+				}
 			}
-			int eid = -1;
-			while(in.hasNext()){
-				int uid = in.nextInt();
-				if(uid == -1) break;
-				int vid = in.nextInt();
-				eid++;
-				ug.addEdgeByID(eid,uid,vid);
-			}
-			in.close();
-			ug.print();
-			
+//			while(in.hasNext()){
+//				int vid = in.nextInt();
+//				if(vid == -1) break;
+//				Node v = new Node(vid);
+//				m.put(vid, v);
+//			}
+//			int eid = -1;
+//			while(in.hasNext()){
+//				int uid = in.nextInt();
+//				if(uid == -1) break;
+//				int vid = in.nextInt();
+//				eid++;
+//				ug.addEdgeByID(eid,uid,vid);
+//			}
+//			in.close();
+//			ug.print();
+//
 
 			LSGraphManager mgr = new LSGraphManager();
 			Node r = ug.getNodeByID(1);
@@ -46,6 +55,7 @@ public class TestVarRootedTree {
 			InsertableEdgesVarRootedTree I = new InsertableEdgesVarRootedTree(t);
 			RemovableEdgesVarRootedTree R = new RemovableEdgesVarRootedTree(t);
 			ReplacingEdgesVarRootedTree RPL = new ReplacingEdgesVarRootedTree(t);
+			DiameterTree diameterTree = new DiameterTree(t);
 			mgr.close(); // duoc goi o day
 			
 			//Edge eii = Utility.randomSelect(I.getEdges());
