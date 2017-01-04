@@ -124,22 +124,22 @@ public class TotalCommunicationCostTree implements GFunction {
 		init();
 	}
 	@Override
-	public void propagateAddEdge(VarRootedTree vt, Edge e) {
+	public void propagateAddEdge(VarGraph vt, Edge e) {
 		// TODO Auto-generated method stub
 		initPropagate();
 	}
 	@Override
-	public void propagateRemoveEdge(VarRootedTree vt, Edge e) {
+	public void propagateRemoveEdge(VarGraph vt, Edge e) {
 		// TODO Auto-generated method stub
 		initPropagate();
 	}
 	@Override
-	public void propagateReplaceEdge(VarRootedTree vt, Edge eo, Edge ei) {
+	public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
 		// TODO Auto-generated method stub
 		initPropagate();
 	}
 	@Override
-	public double getAddEdgeDelta(VarRootedTree vt, Edge e) {
+	public double getAddEdgeDelta(VarGraph vt, Edge e) {
 		// TODO Auto-generated method stub
 		Node n1 = e.getBegin();
 		Node n2 = e.getEnd();
@@ -151,11 +151,12 @@ public class TotalCommunicationCostTree implements GFunction {
 		return tmpValue.get(n1) + e.getWeight(idxWeight)*vt.getLUB().getNbrNodes();
 	}
 	@Override
-	public double getRemoveEdgeDelta(VarRootedTree vt, Edge e) {
+	public double getRemoveEdgeDelta(VarGraph vt, Edge e) {
 		// TODO Auto-generated method stub
 		Node n1 = e.getBegin();
 		Node n2 = e.getEnd();
-		if(vt.nca(n1, n2) == n2){
+		VarRootedTree vrt = (VarRootedTree) vt;
+		if(vrt.nca(n1, n2) == n2){
 			Node tm = n1;
 			n1 = n2;
 			n2 = tm;
@@ -163,11 +164,12 @@ public class TotalCommunicationCostTree implements GFunction {
 		return -tmpValue.get(n1) - e.getWeight(idxWeight)*(vt.getLUB().getNbrNodes()-1);
 	}
 	@Override
-	public double getReplaceEdgeDelta(VarRootedTree vt, Edge ei, Edge eo) {
+	public double getReplaceEdgeDelta(VarGraph vt, Edge ei, Edge eo) {
 		// TODO Auto-generated method stub
 		Node p = eo.getBegin();
 		Node q = eo.getEnd();
-		if(p!=vt.root() && vt.getFatherNode(p) == q){
+		VarRootedTree vrt = (VarRootedTree) vt;
+		if(p!=vrt.root() && vrt.getFatherNode(p) == q){
 			Node tmp = p;
 			p = q;
 			q = tmp;
@@ -183,12 +185,12 @@ public class TotalCommunicationCostTree implements GFunction {
 		
 		Node ei1 = ei.getBegin();
 		Node ei2 = ei.getEnd();
-		if(vt.nca(q, ei1) != q){
+		if(vrt.nca(q, ei1) != q){
 			Node tmp = ei1;
 			ei1 = ei2;
 			ei2 = tmp;
 		}
-		Node nca_q_ei2 = vt.nca(q, ei2);
+		Node nca_q_ei2 = vrt.nca(q, ei2);
 		double ad1 = csz * (tmpValue.get(ei2) + subTreeSumWeightMulSiz.get(ei2) - subTreeSumWeightMulSiz.get(q)- csz *(sumWeightFromRoot.get(q) + sumWeightFromRoot.get(ei2) - 2*sumWeightFromRoot.get(nca_q_ei2) ));
 		double ad2 = ei.getWeight(idxWeight)* csz * (n - csz);
 		double ad3 = (n - csz) * (tmpValue.get(ei1) + subTreeSumWeightMulSiz.get(ei1) - tmpValue.get(q) - (sumWeightFromRoot.get(ei1) - sumWeightFromRoot.get(q))*(n - csz));
@@ -226,7 +228,7 @@ public class TotalCommunicationCostTree implements GFunction {
 				Edge e = ug.addEdgeByID(eid,uid,vid);
 				double []w = new double[1];
 				w[0] = in.nextDouble();
-				e.setWeight(w);
+				e.setWeights(w);
 				int fl = in.nextInt();
 				if(fl == 1){
 					leofTree.add(e);

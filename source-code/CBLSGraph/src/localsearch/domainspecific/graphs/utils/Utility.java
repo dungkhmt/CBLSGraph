@@ -31,6 +31,26 @@ public class Utility {
         }
     }
 
+    public static HashSet<Edge> collectReplacedEdges(VarRootedTree vt, Edge e) {
+        Node u = e.getBegin();
+        Node v = e.getEnd();
+        Node uv = vt.nca(u, v);
+        HashSet<Edge> E = new HashSet<Edge>();
+        Node x = u;
+        while (x != uv) {
+            Edge ei = vt.getFatherEdge(x);
+            E.add(ei);
+            x = vt.getFatherNode(x);
+        }
+        x = v;
+        while (x != uv) {
+            Edge ei = vt.getFatherEdge(x);
+            E.add(ei);
+            x = vt.getFatherNode(x);
+        }
+        return E;
+    }
+
     public static String setEdge2String(HashSet<Edge> E) {
         String s = "";
         for (Edge e : E) {

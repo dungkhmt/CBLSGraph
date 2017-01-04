@@ -40,6 +40,6 @@ public class Edge extends BasicGraphElement {
     }
 
     public String toString() {
-        return getID() + " (" + begin.getID() + ", " + end.getID() + ")";
+        return " (" + begin.getID() + ", " + end.getID() + ")";
     }
 }

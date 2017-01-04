@@ -25,7 +25,7 @@ public class VarGraph extends BasicGraphElement {
 	}
 	
 	public boolean addEdge(Edge e){
-		System.out.println("VarGraph");
+		//System.out.println("VarGraph");
 		edges.add(e);
 		Node u = e.getBegin();
 		Node v = e.getEnd();

@@ -39,7 +39,7 @@ public class TestVarRootedTree {
 			in.close();
 			ug.print();
 			
-			
+
 			LSGraphManager mgr = new LSGraphManager();
 			Node r = ug.getNodeByID(1);
 			VarRootedTree t = new VarRootedTree(mgr,ug,r);
@@ -63,7 +63,7 @@ public class TestVarRootedTree {
 			
 			java.util.Random rand = new java.util.Random();
 			HashSet<Edge> RP = new HashSet<Edge>();
-			for(int it = 0; it < 10; it++){
+			for(int it = 0; it < 100000; it++){
 				int choice = rand.nextInt(3);
 				if(choice == 0){// add edge
 					Edge e = Utility.randomSelect(I.getEdges());
