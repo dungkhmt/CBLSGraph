@@ -76,7 +76,22 @@ public class ReplacingEdgesVarRootedTree implements GInvariant {
     @Override
     public void propagateAddEdge(VarGraph vt, Edge e) {
         // TODO Auto-generated method stub
-        System.out.println(name() + "::propagateAddEdge(" + e.toString() + ")");
+    }
+
+    @Override
+    public void propagateRemoveEdge(VarGraph vt, Edge e) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
+        // TODO Auto-generated method stub
+    }
+
+	@Override
+	public void propagateAddEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+        System.out.println(name() + "::propagateAddEdgeVarRootedTree(" + e.toString() + ")");
         if (this.vt != vt) {
             return;
         }
@@ -98,12 +113,13 @@ public class ReplacingEdgesVarRootedTree implements GInvariant {
                 replacingEdges.add(ei);
             }
         }
-    }
+		
+	}
 
-    @Override
-    public void propagateRemoveEdge(VarGraph vt, Edge e) {
-        // TODO Auto-generated method stub
-        System.out.println(name() + "::propagateRemoveEdge(" + e.toString() + ")");
+	@Override
+	public void propagateRemoveEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+        System.out.println(name() + "::propagateRemoveEdgeVarRooted(" + e.toString() + ")");
         if (this.vt != vt)
             return;
         Node fv = e.getBegin();
@@ -121,16 +137,36 @@ public class ReplacingEdgesVarRootedTree implements GInvariant {
                 replacingEdges.remove(ei);
             }
         }
-    }
+		
+	}
 
-    @Override
-    public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
-        // TODO Auto-generated method stub
-        System.out.println(name() + "::propagateReplaceEdge(" + eo.toString() + "," + ei.toString() + ")");
+	@Override
+	public void propagateReplaceEdgeVarRootedTree(VarRootedTree vt, Edge ei,
+			Edge eo) {
+		// TODO Auto-generated method stub
+        System.out.println(name() + "::propagateReplaceEdgeVarRootedTree(" + eo.toString() + "," + ei.toString() + ")");
         if (this.vt != vt)
             return;
         replacingEdges.remove(ei);
         replacingEdges.add(eo);
-    }
+		
+	}
+
+	@Override
+	public void propagateNodeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
+		// TODO Auto-generated method stub
+		System.out.println(name() + "::propagateNodeOptVarRootedTree NOT IMPLEMENTED YET");
+		assert(false);
+
+	}
+
+	@Override
+	public void propagateSubTreeOptVarRootedTree(VarRootedTree vt, Node v,
+			Node u) {
+		// TODO Auto-generated method stub
+		System.out.println(name() + "::propagateSubTreeOptVarRootedTree NOT IMPLEMENTED YET");
+		assert(false);
+
+	}
 
 }

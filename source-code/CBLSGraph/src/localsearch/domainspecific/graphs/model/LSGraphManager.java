@@ -6,6 +6,7 @@
 package localsearch.domainspecific.graphs.model;
 
 import localsearch.domainspecific.graphs.core.Edge;
+import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.invariants.GInvariant;
 
 import java.util.ArrayList;
@@ -55,6 +56,56 @@ public class LSGraphManager {
 			gi.propagateReplaceEdge(vt, eo, ei);
 		}
 	}
+	
+	
+	// add an edge to vt
+	public void addEdgeVarRootedTree(VarRootedTree vt, Edge e){
+		TreeSet<GInvariant> s = _map.get(vt);
+		for(GInvariant gi : s){
+			gi.propagateAddEdgeVarRootedTree(vt, e);
+		}
+		
+	}
+	
+	// remove the edge from vt
+	public void removeEdgeVarRootedTree(VarRootedTree vt, Edge e){
+		TreeSet<GInvariant> s = _map.get(vt);
+		for(GInvariant gi : s){
+			gi.propagateRemoveEdgeVarRootedTree(vt, e);
+		}
+
+	}
+	
+	// add ei to vt will create a cycle, then remove edge edge eo of the cycle --> return a new VarRootedTree
+	public void replaceEdgeVarRootedTree(VarRootedTree vt, Edge ei, Edge eo){
+		TreeSet<GInvariant> s = _map.get(vt);
+		for(GInvariant gi : s){
+			gi.propagateReplaceEdgeVarRootedTree(vt, eo, ei);
+		}
+
+	}
+	
+	// all children of v will be marked as children of parent p(v) of v
+	// v will be inserted between u and parent p(u) of u
+	public void nodeOptVarRootedTree(VarRootedTree vt, Node v, Node u){
+		TreeSet<GInvariant> s = _map.get(vt);
+		for(GInvariant gi : s){
+			gi.propagateNodeOptVarRootedTree(vt, v, u);
+		}
+
+	}
+	
+	
+	// remove subtree rooted at v from vt, 
+	// and re-insert this subtree between u and parent p(u) of u
+	public void subTreeOptVarRootedTree(VarRootedTree vt, Node v, Node u){
+		TreeSet<GInvariant> s = _map.get(vt);
+		for(GInvariant gi : s){
+			gi.propagateSubTreeOptVarRootedTree(vt, v, u);
+		}
+		
+	}
+	
 	
 	public boolean isClosed(){
 		return this.closed;

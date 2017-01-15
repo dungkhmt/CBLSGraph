@@ -1,6 +1,7 @@
 package localsearch.domainspecific.graphs.constraints;
 
 import localsearch.domainspecific.graphs.core.Edge;
+import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.model.LSGraphManager;
 import localsearch.domainspecific.graphs.model.VarGraph;
 import localsearch.domainspecific.graphs.model.VarRootedTree;
@@ -72,5 +73,57 @@ public class TreeEdgeDisjoint implements GConstraint {
 	@Override
 	public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
 
+	}
+	@Override
+	public void propagateAddEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void propagateRemoveEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void propagateReplaceEdgeVarRootedTree(VarRootedTree vt, Edge ei,
+			Edge eo) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void propagateNodeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void propagateSubTreeOptVarRootedTree(VarRootedTree vt, Node v,
+			Node u) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public int getAddEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public int getRemoveEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public int getReplaceEdgeVarRootedTree(VarRootedTree vt, Edge ei, Edge eo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public int getNodeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public int getSubTreeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

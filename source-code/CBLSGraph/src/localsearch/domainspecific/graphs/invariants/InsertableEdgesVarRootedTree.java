@@ -84,7 +84,27 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 	@Override
 	public void propagateAddEdge(VarGraph vt, Edge e) {
 		// TODO Auto-generated method stub
-		System.out.println(name() + "::propagateAddEdge(" + e.toString() + ")");
+		// DO NOTHING
+	}
+
+	@Override
+	public void propagateRemoveEdge(VarGraph vt, Edge e) {
+		// TODO Auto-generated method stub
+		// DO NOTHING
+	}
+
+	@Override
+	public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
+		// TODO Auto-generated method stub
+		// DO NOTHING
+		//System.out.println(name() + "::propagateReplaceEdge(" + eo.toString() + "," + ei.toString() + ")");
+		// DO NOTHING
+	}
+
+	@Override
+	public void propagateAddEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+		System.out.println(name() + "::propagateAddEdgeVarRootedTree(" + e.toString() + ")");
 		if (this.vt != vt) {
 			return;
 		}
@@ -118,12 +138,13 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 				insertableEdgesOfExternalNode.get(u).add(ei);
 			}
 		}
+		
 	}
 
 	@Override
-	public void propagateRemoveEdge(VarGraph vt, Edge e) {
+	public void propagateRemoveEdgeVarRootedTree(VarRootedTree vt, Edge e) {
 		// TODO Auto-generated method stub
-		System.out.println(name() + "::propagateRemoveEdge(" + e.toString() + ")");
+		System.out.println(name() + "::propagateRemoveEdgeVarRootedTree(" + e.toString() + ")");
 		if(this.vt != vt) {
 			return;
 		}
@@ -154,13 +175,29 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 				insertableEdgesOfInternalNode.get(u).add(ei);
 			}
 		}
+		
 	}
 
 	@Override
-	public void propagateReplaceEdge(VarGraph vt, Edge eo, Edge ei) {
+	public void propagateReplaceEdgeVarRootedTree(VarRootedTree vt, Edge ei,
+			Edge eo) {
 		// TODO Auto-generated method stub
 		// DO NOTHING
-		System.out.println(name() + "::propagateReplaceEdge(" + eo.toString() + "," + ei.toString() + ")");
+	}
+
+	@Override
+	public void propagateNodeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
+		// TODO Auto-generated method stub
+		System.out.println(name() + "::propagateNodeOptVarRootedTree NOT IMPLEMENTED YET");
+		assert(false);
+	}
+
+	@Override
+	public void propagateSubTreeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
+		// TODO Auto-generated method stub
+		System.out.println(name() + "::propagateSubTreeOptVarRootedTree NOT IMPLEMENTED YET");
+		assert(false);
+	
 	}
 
 }

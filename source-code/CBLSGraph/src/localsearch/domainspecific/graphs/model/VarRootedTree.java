@@ -163,7 +163,8 @@ public class VarRootedTree extends VarTree {
 			System.exit(-1);
 		}
 		removeEdge(e);
-		mgr.removeEdge(this, e);
+		//mgr.removeEdge(this, e);
+		mgr.removeEdgeVarRootedTree(this, e);
 	}
 	
 	public void addEdgePropagate(Edge e){
@@ -186,7 +187,8 @@ public class VarRootedTree extends VarTree {
 			System.exit(-1);
 		}
 		addEdge(e);
-		mgr.addEdge(this, e);
+		//mgr.addEdge(this, e);
+		mgr.addEdgeVarRootedTree(this, e);
 	}
 	
 	public void replaceEdgePropagate(Edge eo, Edge ei){
@@ -213,7 +215,8 @@ public class VarRootedTree extends VarTree {
 			System.exit(-1);
 		}
 		replaceEdge(eo, ei);
-		mgr.replaceEdge(this, eo, ei);
+		//mgr.replaceEdge(this, eo, ei);
+		mgr.replaceEdgeVarRootedTree(this, ei, eo);
 	}
 	
 	public static void main(String[] args) {

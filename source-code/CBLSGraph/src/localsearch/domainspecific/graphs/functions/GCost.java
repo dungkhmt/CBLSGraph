@@ -1,6 +1,7 @@
 package localsearch.domainspecific.graphs.functions;
 
 import localsearch.domainspecific.graphs.core.Edge;
+import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.model.LSGraphManager;
 import localsearch.domainspecific.graphs.model.VarGraph;
 import localsearch.domainspecific.graphs.model.VarRootedTree;
@@ -109,6 +110,68 @@ public class GCost implements GFunction {
 	public double getValue() {
 		// TODO Auto-generated method stub
 		return _value;
+	}
+
+	@Override
+	public void propagateAddEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void propagateRemoveEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void propagateReplaceEdgeVarRootedTree(VarRootedTree vt, Edge ei,
+			Edge eo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void propagateNodeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void propagateSubTreeOptVarRootedTree(VarRootedTree vt, Node v,
+			Node u) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double getAddEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getRemoveEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getReplaceEdgeVarRootedTree(VarRootedTree vt, Edge ei, Edge eo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getNodeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getSubTreeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
