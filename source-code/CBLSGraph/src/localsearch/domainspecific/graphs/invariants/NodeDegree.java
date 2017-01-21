@@ -4,6 +4,7 @@ import localsearch.domainspecific.graphs.core.Edge;
 import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.model.LSGraphManager;
 import localsearch.domainspecific.graphs.model.VarGraph;
+import localsearch.domainspecific.graphs.model.VarRootedTree;
 
 import java.util.HashMap;
 
@@ -89,6 +90,38 @@ public class NodeDegree implements GInvariant {
 	public int getDegree(Node u) {
 		if (_degrees.containsKey(u)) return _degrees.get(u);
 		return 0;
+	}
+
+	@Override
+	public void propagateAddEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void propagateRemoveEdgeVarRootedTree(VarRootedTree vt, Edge e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void propagateReplaceEdgeVarRootedTree(VarRootedTree vt, Edge ei,
+			Edge eo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void propagateNodeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void propagateSubTreeOptVarRootedTree(VarRootedTree vt, Node v,
+			Node u) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

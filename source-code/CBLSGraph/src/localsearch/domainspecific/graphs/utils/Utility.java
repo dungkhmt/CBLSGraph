@@ -11,6 +11,8 @@ import java.util.Random;
 
 
 public class Utility {
+	public static final double EPSILON = 0.00001;
+	
     public static void collectReplacedEdges(VarRootedTree vt, Edge e, HashSet<Edge> E) {
         Node u = e.getBegin();
         Node v = e.getEnd();
@@ -141,6 +143,9 @@ public class Utility {
         return t;
     }
 
+    public static boolean equal(double a, double b){
+		return Math.abs(a-b) < EPSILON;
+	}
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
