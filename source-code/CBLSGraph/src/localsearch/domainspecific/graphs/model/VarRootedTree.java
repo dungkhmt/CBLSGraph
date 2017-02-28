@@ -17,7 +17,9 @@ public class VarRootedTree extends VarTree {
 	private HashMap<Node, Node> fatherNode;
 	private HashMap<Node, Edge> fatherEdge;
 	private NearestCommonAncestor NCA;
-	
+
+	private HashMap<Node, HashMap<Node, Edge>> euv;
+
 	public VarRootedTree(LSGraphManager mgr, UndirectedGraph lub, Node root){
 		super(mgr, lub);
 		this.root = root;
@@ -25,11 +27,27 @@ public class VarRootedTree extends VarTree {
 		fatherNode = new HashMap<Node, Node>();
 		fatherEdge = new HashMap<Node, Edge>();
 		NCA = new NearestCommonAncestor(this);
+
+		euv = new HashMap<Node, HashMap<Node, Edge>>();
+		for (Edge e : lub.getEdges()) {
+			if (!euv.containsKey(e.getBegin())) {
+				euv.put(e.getBegin(), new HashMap<Node, Edge>());
+			}
+			if (!euv.containsKey(e.getEnd())) {
+				euv.put(e.getEnd(), new HashMap<Node, Edge>());
+			}
+			euv.get(e.getBegin()).put(e.getEnd(), e);
+			euv.get(e.getEnd()).put(e.getBegin(), e);
+		}
 		initTree();
 	}
 
 	private void initTree() {
 
+	}
+
+	public Edge getEdge(Node u, Node v) {
+		return euv.get(u).get(v);
 	}
 
 	public Node nca(Node u, Node v) {
@@ -218,7 +236,15 @@ public class VarRootedTree extends VarTree {
 		//mgr.replaceEdge(this, eo, ei);
 		mgr.replaceEdgeVarRootedTree(this, ei, eo);
 	}
-	
+
+	public void nodeOptVarRootedTreePropagate(VarRootedTree vt, Node v, Node u) {
+
+	}
+
+	public void subTreeOptVarRootedTreePropagate(VarRootedTree vt, Node v, Node u) {
+
+	}
+
 	public static void main(String[] args) {
 		try {
 			Scanner in = new Scanner(new File("data/g.txt"));
