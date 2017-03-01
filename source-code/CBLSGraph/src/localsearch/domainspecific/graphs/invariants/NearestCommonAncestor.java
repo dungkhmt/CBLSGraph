@@ -216,32 +216,32 @@ public class NearestCommonAncestor implements GInvariant{
 	@Override
 	public void propagateAddEdgeVarRootedTree(VarRootedTree vt, Edge e) {
 		// TODO Auto-generated method stub
-		
+		makeNCA();
 	}
 
 	@Override
 	public void propagateRemoveEdgeVarRootedTree(VarRootedTree vt, Edge e) {
 		// TODO Auto-generated method stub
-		
+		makeNCA();
 	}
 
 	@Override
 	public void propagateReplaceEdgeVarRootedTree(VarRootedTree vt, Edge ei,
 			Edge eo) {
 		// TODO Auto-generated method stub
-		
+		makeNCA();
 	}
 
 	@Override
 	public void propagateNodeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
 		// TODO Auto-generated method stub
-		
+		makeNCA();
 	}
 
 	@Override
 	public void propagateSubTreeOptVarRootedTree(VarRootedTree vt, Node v,
 			Node u) {
 		// TODO Auto-generated method stub
-		
+		makeNCA();
 	}
 }
