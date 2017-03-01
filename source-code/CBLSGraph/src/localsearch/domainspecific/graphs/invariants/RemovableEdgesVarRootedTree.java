@@ -140,12 +140,12 @@ public class RemovableEdgesVarRootedTree implements GInvariant {
 	public void propagateReplaceEdgeVarRootedTree(VarRootedTree vt, Edge ei,
 			Edge eo) {
 		// TODO Auto-generated method stub
-        System.out.println(name() + "::propagateReplaceEdge(" + eo.toString() + ", " + ei.toString() + ")");
+        System.out.println(name() + "::propagateReplaceEdgeVarRootedTree(" + eo.toString() + ", " + ei.toString() + ")");
         if (this.vt != vt) {
             return;
         }
 
-        VarRootedTree vrt = (VarRootedTree) vt;
+        VarRootedTree vrt = vt;
 
         Node u1 = ei.getBegin();
         Node v1 = ei.getEnd();
@@ -183,6 +183,9 @@ public class RemovableEdgesVarRootedTree implements GInvariant {
                         removableEdges.remove(e);
                     }
                 }
+            }
+            if (removableEdges.contains(eo)) {
+                removableEdges.remove(eo);
             }
             if (vt.getAdj(v2).size() == 1) {
                 removableEdges.add(vrt.getFatherEdge(v2));
@@ -231,4 +234,11 @@ public class RemovableEdgesVarRootedTree implements GInvariant {
         }
 	}
 
+    public void print() {
+        System.out.println(name() + "::print");
+        for (Edge e : removableEdges) {
+            System.out.print(e);
+        }
+        System.out.println();
+    }
 }

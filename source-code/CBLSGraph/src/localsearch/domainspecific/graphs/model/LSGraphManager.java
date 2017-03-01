@@ -80,7 +80,7 @@ public class LSGraphManager {
 	public void replaceEdgeVarRootedTree(VarRootedTree vt, Edge ei, Edge eo){
 		TreeSet<GInvariant> s = _map.get(vt);
 		for(GInvariant gi : s){
-			gi.propagateReplaceEdgeVarRootedTree(vt, eo, ei);
+			gi.propagateReplaceEdgeVarRootedTree(vt, ei, eo);
 		}
 
 	}

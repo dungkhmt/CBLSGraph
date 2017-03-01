@@ -127,7 +127,7 @@ public class VarRootedTree extends VarTree {
 		}
 	}
 	
-	public boolean replaceEdge(Edge eo, Edge ei){
+	public boolean replaceEdge(Edge ei, Edge eo){
 		Node uo = eo.getBegin();
 		Node vo = eo.getEnd();
 		Node ui = ei.getBegin();
@@ -195,9 +195,9 @@ public class VarRootedTree extends VarTree {
 		mgr.addEdgeVarRootedTree(this, e);
 	}
 	
-	public void replaceEdgePropagate(Edge eo, Edge ei){
+	public void replaceEdgePropagate(Edge ei, Edge eo){
 		if (!(contains(eo) && !contains(ei))) {
-			System.out.println(name() + "::replaceEdgePropagate" + ei.toString() + " this edge does belong to the tree, or " + eo + " this edge does not belong to the tree");
+			System.out.println(name() + "::replaceEdgePropagate" + ei.toString() + " this edge does belong to the tree, or" + eo + " this edge does not belong to the tree");
 			System.exit(-1);
 		}
 		Node uo = eo.getBegin();
@@ -218,7 +218,7 @@ public class VarRootedTree extends VarTree {
 			System.out.println(name() + "::replaceEdgePropagate " + "(" + eo + ", " + ei + ") " + " this will create two connected components and a cycle");
 			System.exit(-1);
 		}
-		replaceEdge(eo, ei);
+		replaceEdge(ei, eo);
 		//mgr.replaceEdge(this, eo, ei);
 		mgr.replaceEdgeVarRootedTree(this, ei, eo);
 	}
@@ -311,6 +311,7 @@ public class VarRootedTree extends VarTree {
 		super.addEdge(evp);
 		fatherNode.put(v, p);
 		fatherEdge.put(v, evp);
+		mgr.subTreeOptVarRootedTree(this, v, u);
 	}
 
 	public static void main(String[] args) {

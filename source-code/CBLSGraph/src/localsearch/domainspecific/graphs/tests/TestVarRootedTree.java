@@ -20,34 +20,34 @@ public class TestVarRootedTree {
 
 	public void test(){
 		try{
-			Scanner in = new Scanner(new File("source-code/CBLSGraph/data/g.txt"));
+			Scanner in = new Scanner(new File("/home/hoangnt/IdeaProjects/CBLSGraph/source-code/CBLSGraph/data/g.txt"));
 			HashMap<Integer, Node> m = new HashMap<Integer, Node>();
 			UndirectedGraph ug = new UndirectedGraph();
-			int n = 20;
-			for (int i = 1; i <= n; i++) {
-				for (int j = 1; j <= n; j++) {
-					if (i != j) {
-						ug.addEdgeByID((i - 1) * n + j, i, j);
-					}
-				}
+//			int n = 20;
+//			for (int i = 1; i <= n; i++) {
+//				for (int j = 1; j <= n; j++) {
+//					if (i != j) {
+//						ug.addEdgeByID((i - 1) * n + j, i, j);
+//					}
+//				}
+//			}
+			while(in.hasNext()){
+				int vid = in.nextInt();
+				if(vid == -1) break;
+				Node v = new Node(vid);
+				m.put(vid, v);
 			}
-//			while(in.hasNext()){
-//				int vid = in.nextInt();
-//				if(vid == -1) break;
-//				Node v = new Node(vid);
-//				m.put(vid, v);
-//			}
-//			int eid = -1;
-//			while(in.hasNext()){
-//				int uid = in.nextInt();
-//				if(uid == -1) break;
-//				int vid = in.nextInt();
-//				eid++;
-//				ug.addEdgeByID(eid,uid,vid);
-//			}
-//			in.close();
-//			ug.print();
-//
+			int eid = -1;
+			while(in.hasNext()){
+				int uid = in.nextInt();
+				if(uid == -1) break;
+				int vid = in.nextInt();
+				eid++;
+				ug.addEdgeByID(eid,uid,vid);
+			}
+			in.close();
+			ug.print();
+
 
 			LSGraphManager mgr = new LSGraphManager();
 			Node r = ug.getNodeByID(1);
@@ -80,12 +80,16 @@ public class TestVarRootedTree {
 					if(e != null){
 						t.addEdgePropagate(e);
 						System.out.println(it + ", addEdge(" + e.toString() + "), t.txt = "); t.print();
+//						RPL.print();
+//						R.print();
 					}
 				}else if(choice == 1){// remove edge
 					Edge e = Utility.randomSelect(R.getEdges());
 					if(e != null){
 						t.removeEdgePropagate(e);
 						System.out.println(it + ", removeEdge(" + e.toString() + "), t.txt = "); t.print();
+//						RPL.print();
+//						R.print();
 					}
 				}else if(choice == 2){// replace
 					Edge ei = Utility.randomSelect(RPL.getEdges());
@@ -93,8 +97,10 @@ public class TestVarRootedTree {
 						Utility.collectReplacedEdges(t, ei, RP);
 						Edge eo = Utility.randomSelect(RP);
 						if(eo != null){
-							t.replaceEdgePropagate(eo, ei);
+							t.replaceEdgePropagate(ei, eo);
 							System.out.println(it + ", replaceEdge(" + eo.toString() + "," + ei.toString() + "), t.txt = "); t.print();
+//							RPL.print();
+//							R.print();
 						}
 					}
 				}

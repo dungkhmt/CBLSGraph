@@ -133,7 +133,7 @@ public class ReplacingEdgesVarRootedTree implements GInvariant {
         Graph lub = vt.getLUB();
         for (Edge ei : lub.getAdj(cv)) {
             Node other = ei.otherNode(cv);
-            if (vt.contains(other)) {
+            if (vt.contains(other) ) {
                 replacingEdges.remove(ei);
             }
         }
@@ -179,4 +179,11 @@ public class ReplacingEdgesVarRootedTree implements GInvariant {
         initPropagate();
 	}
 
+	public void print() {
+        System.out.println(name() + "::print");
+        for (Edge e : replacingEdges) {
+            System.out.print(e);
+        }
+        System.out.println();
+    }
 }
