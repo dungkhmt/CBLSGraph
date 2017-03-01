@@ -2,7 +2,9 @@ package localsearch.domainspecific.graphs.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 import localsearch.domainspecific.graphs.core.Edge;
@@ -18,7 +20,7 @@ public class VarRootedTree extends VarTree {
 	private HashMap<Node, Edge> fatherEdge;
 	private NearestCommonAncestor NCA;
 
-	private HashMap<Node, HashMap<Node, Edge>> euv;
+
 
 	public VarRootedTree(LSGraphManager mgr, UndirectedGraph lub, Node root){
 		super(mgr, lub);
@@ -27,27 +29,11 @@ public class VarRootedTree extends VarTree {
 		fatherNode = new HashMap<Node, Node>();
 		fatherEdge = new HashMap<Node, Edge>();
 		NCA = new NearestCommonAncestor(this);
-
-		euv = new HashMap<Node, HashMap<Node, Edge>>();
-		for (Edge e : lub.getEdges()) {
-			if (!euv.containsKey(e.getBegin())) {
-				euv.put(e.getBegin(), new HashMap<Node, Edge>());
-			}
-			if (!euv.containsKey(e.getEnd())) {
-				euv.put(e.getEnd(), new HashMap<Node, Edge>());
-			}
-			euv.get(e.getBegin()).put(e.getEnd(), e);
-			euv.get(e.getEnd()).put(e.getBegin(), e);
-		}
 		initTree();
 	}
 
 	private void initTree() {
 
-	}
-
-	public Edge getEdge(Node u, Node v) {
-		return euv.get(u).get(v);
 	}
 
 	public Node nca(Node u, Node v) {
@@ -166,7 +152,7 @@ public class VarRootedTree extends VarTree {
 
 	public void removeEdgePropagate(Edge e){
 		if (!contains(e)) {
-			System.out.println(name() + "::removeEdge(" + e.getBegin().getID() + "," + e.getEnd().getID() + ") -> exception: this edge does not belong to the tree");
+			System.out.println(name() + "::removeEdgePropagate(" + e.getBegin().getID() + "," + e.getEnd().getID() + ") -> exception: this edge does not belong to the tree");
 			System.exit(-1);
 		}
 
@@ -177,7 +163,7 @@ public class VarRootedTree extends VarTree {
 			cv = e.getBegin();
 		}
 		if(Adj.get(cv).size() != 1){
-			System.out.println(name() + "::removeEdge(" + fv.getID() + "," + cv.getID() + ") -> exception: this edge is not a leaf of the tree");
+			System.out.println(name() + "::removeEdgePropagate(" + fv.getID() + "," + cv.getID() + ") -> exception: this edge is not a leaf of the tree");
 			System.exit(-1);
 		}
 		removeEdge(e);
@@ -187,7 +173,7 @@ public class VarRootedTree extends VarTree {
 	
 	public void addEdgePropagate(Edge e){
 		if (contains(e)) {
-			System.out.println(name() + "::addEdge" + e.toString() + " this edge does belong to the tree");
+			System.out.println(name() + "::addEdgePropagate" + e.toString() + " this edge does belong to the tree");
 			System.exit(-1);
 		}
 		Node leaf = e.getBegin();
@@ -197,11 +183,11 @@ public class VarRootedTree extends VarTree {
 			other = e.getBegin();
 		}
 		if (!contains(other)) {
-			System.out.println(name() + "::addEdge" + e.toString() + " exception: two endpoints are not belongs to the tree, this will create two connected components");
+			System.out.println(name() + "::addEdgePropagate" + e.toString() + " exception: two endpoints are not belongs to the tree, this will create two connected components");
 			System.exit(-1);
 		}
 		if(contains(leaf)){
-			System.out.println(name() + "::addEdge" + e.toString() + " exception: two endpoints are belongs to the tree, this will create a cycle");
+			System.out.println(name() + "::addEdgePropagate" + e.toString() + " exception: two endpoints are belongs to the tree, this will create a cycle");
 			System.exit(-1);
 		}
 		addEdge(e);
@@ -211,7 +197,7 @@ public class VarRootedTree extends VarTree {
 	
 	public void replaceEdgePropagate(Edge eo, Edge ei){
 		if (!(contains(eo) && !contains(ei))) {
-			System.out.println(name() + "::replaceEdge" + ei.toString() + " this edge does belong to the tree, or " + eo + " this edge does not belong to the tree");
+			System.out.println(name() + "::replaceEdgePropagate" + ei.toString() + " this edge does belong to the tree, or " + eo + " this edge does not belong to the tree");
 			System.exit(-1);
 		}
 		Node uo = eo.getBegin();
@@ -219,7 +205,7 @@ public class VarRootedTree extends VarTree {
 		Node ui = ei.getBegin();
 		Node vi = ei.getEnd();
 		if (!contains(uo) || !contains(ui) || !contains(vo) || !contains(vi)) {
-			System.out.println(name() + "::replaceEdge " + "(" + eo + ", " + ei + ") " + " there is some nodes that do not belong the tree");
+			System.out.println(name() + "::replaceEdgePropagate " + "(" + eo + ", " + ei + ") " + " there is some nodes that do not belong the tree");
 			System.exit(-1);
 		}
 		if (fatherNode.get(uo) == vo) {
@@ -229,7 +215,7 @@ public class VarRootedTree extends VarTree {
 		Node x = nca(ui, vo);
 		Node y = nca(vi, vo);
 		if ((x == vo ? 1 : 0) + (y == vo ? 1 : 0) != 1) {
-			System.out.println(name() + "::replaceEdge " + "(" + eo + ", " + ei + ") " + " this will create two connected components and a cycle");
+			System.out.println(name() + "::replaceEdgePropagate " + "(" + eo + ", " + ei + ") " + " this will create two connected components and a cycle");
 			System.exit(-1);
 		}
 		replaceEdge(eo, ei);
@@ -237,12 +223,94 @@ public class VarRootedTree extends VarTree {
 		mgr.replaceEdgeVarRootedTree(this, ei, eo);
 	}
 
-	public void nodeOptVarRootedTreePropagate(VarRootedTree vt, Node v, Node u) {
+	// all children of v will be marked as children of parent p(v) of v
+	// v will be inserted between u and parent p(u) of u
+	public void nodeOptVarRootedTreePropagate(Node v, Node u) {
+		if (u == v) {
+			System.out.println(name() + "::nodeOptVarRootedTreePropagate (v, u) = (" + v + ", " + u + ")");
+			System.exit(-1);
+		}
+		if (!contains(v) || !contains(u)) {
+			System.out.println(name() + "::nodeOptVarRootedTreePropagate" + v + " this node does belong to the tree, or " + u + " this node does not belong to the tree");
+			System.exit(-1);
+		}
+		if (u == root || v == root) {
+			System.out.println(name() + "::nodeOptVarRootedTreePropagate " + u + " or " + v + " is the root");
+			System.exit(-1);
+		}
 
+		Node p = getFatherNode(u);
+		Edge euv = lub.getEdge(u, v);
+		Edge evp = lub.getEdge(v, p);
+		if (euv == null || evp == null) {
+			System.out.println(name() + "::nodeOptVarRootedTreePropagate (v, u) = (" + v + ", " + u + ")");
+			System.exit(-1);
+		}
+		Node fa = getFatherNode(v);
+		LinkedList<Edge> addedEdges = new LinkedList<Edge>();
+		for (Edge e : getAdj(v)) {
+			Node other = e.getBegin() == v ? e.getEnd() : e.getBegin();
+			if (other != fa) {
+				Edge ei = lub.getEdge(fa, other);
+				if (ei == null) {
+					System.out.println(name() + "::nodeOptVarRootedTreePropagate (v, u) = (" + v + ", " + u + ")");
+					System.exit(-1);
+				}
+				addedEdges.add(ei);
+			}
+		}
+
+		super.removeEdge(getFatherEdge(u));
+		for (Edge e : getAdj(v)) {
+			super.removeEdge(e);
+		}
+		super.addEdge(euv);
+		fatherNode.put(u, v);
+		fatherEdge.put(u, euv);
+		super.addEdge(evp);
+		fatherNode.put(v, p);
+		fatherEdge.put(v, evp);
+		for (Edge e : addedEdges) {
+			super.addEdge(e);
+			Node node = e.getBegin() == fa ? e.getEnd() : e.getBegin();
+			fatherNode.put(node, fa);
+			fatherEdge.put(node, e);
+		}
+
+		mgr.nodeOptVarRootedTree(this, v, u);
 	}
 
+	// remove subtree rooted at v from vt,
+	// and re-insert this subtree between u and parent p(u) of u
 	public void subTreeOptVarRootedTreePropagate(VarRootedTree vt, Node v, Node u) {
+		if (u == v) {
+			System.out.println(name() + "::subTreeOptVarRootedTreePropagate (v, u) = (" + v + ", " + u + ")");
+			System.exit(-1);
+		}
+		if (!contains(v) || !contains(u)) {
+			System.out.println(name() + "::subTreeOptVarRootedTreePropagate" + v + " this node does belong to the tree, or " + u + " this node does not belong to the tree");
+			System.exit(-1);
+		}
+		if (u == root || v == root) {
+			System.out.println(name() + "::subTreeOptVarRootedTreePropagate " + u + " or " + v + " is the root");
+			System.exit(-1);
+		}
+		Node p = getFatherNode(u);
+		Edge euv = lub.getEdge(u, v);
+		Edge evp = lub.getEdge(v, p);
+		if (euv == null || evp == null) {
+			System.out.println(name() + "::subTreeOptVarRootedTreePropagate (v, u) = (" + v + ", " + u + ")");
+			System.exit(-1);
+		}
 
+		super.removeEdge(getFatherEdge(u));
+		super.removeEdge(getFatherEdge(v));
+		super.addEdge(euv);
+		fatherNode.put(u, v);
+		fatherEdge.put(u, euv);
+		super.addEdge(evp);
+		fatherNode.put(v, p);
+		fatherEdge.put(v, evp);
 	}
 
 	public static void main(String[] args) {

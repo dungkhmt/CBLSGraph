@@ -10,12 +10,15 @@ public class Graph {
 	protected HashMap<Integer, Edge> mID2Edge;
 	protected HashMap<Node, HashSet<Edge>> Adj;
 
+	protected HashMap<Node, HashMap<Node, Edge>> mNodeNode2Edge;
+
 	public Graph() {
 		nodes = new HashSet<Node>();
 		edges = new HashSet<Edge>();
 		mID2Node = new HashMap<Integer, Node>();
 		mID2Edge = new HashMap<Integer, Edge>();
 		Adj = new HashMap<Node, HashSet<Edge>>();
+		mNodeNode2Edge = new HashMap<Node, HashMap<Node, Edge>>();
 	}
 	
 	public int getNbrNodes() {
@@ -98,5 +101,10 @@ public class Graph {
 	
 	public Edge getEdgeByID(int id) {
 		return mID2Edge.get(id);
+	}
+
+	public Edge getEdge(Node u, Node v) {
+		HashMap<Node, Edge> mNode2Edge = mNodeNode2Edge.get(u);
+		return mNode2Edge.containsKey(v) ? mNodeNode2Edge.get(u).get(v) : null;
 	}
 }

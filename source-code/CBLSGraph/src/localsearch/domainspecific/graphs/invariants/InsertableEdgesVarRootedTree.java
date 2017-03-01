@@ -188,15 +188,15 @@ public class InsertableEdgesVarRootedTree  implements GInvariant {
 	@Override
 	public void propagateNodeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
 		// TODO Auto-generated method stub
-		System.out.println(name() + "::propagateNodeOptVarRootedTree NOT IMPLEMENTED YET");
-		assert(false);
+		//System.out.println(name() + "::propagateNodeOptVarRootedTree NOT IMPLEMENTED YET");
+		//assert(false);
 	}
 
 	@Override
 	public void propagateSubTreeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
 		// TODO Auto-generated method stub
-		System.out.println(name() + "::propagateSubTreeOptVarRootedTree NOT IMPLEMENTED YET");
-		assert(false);
+		//System.out.println(name() + "::propagateSubTreeOptVarRootedTree NOT IMPLEMENTED YET");
+		//assert(false);
 	
 	}
 

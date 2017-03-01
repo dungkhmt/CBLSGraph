@@ -17,12 +17,16 @@ public class UndirectedGraph extends Graph {
 		Node v = e.getEnd();
 		if (Adj.get(u) == null) {
 			Adj.put(u, new HashSet<Edge>());
+			mNodeNode2Edge.put(u, new HashMap<Node, Edge>());
 		}
 		if (Adj.get(v) == null) {
 			Adj.put(v, new HashSet<Edge>());
+			mNodeNode2Edge.put(v, new HashMap<Node, Edge>());
 		}
 		Adj.get(u).add(e);
 		Adj.get(v).add(e);
+		mNodeNode2Edge.get(u).put(v, e);
+		mNodeNode2Edge.get(v).put(u, e);
 	}
 	
 	@Override
