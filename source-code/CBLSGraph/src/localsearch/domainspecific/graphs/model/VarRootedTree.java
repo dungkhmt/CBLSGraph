@@ -2,10 +2,7 @@ package localsearch.domainspecific.graphs.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 import localsearch.domainspecific.graphs.core.Edge;
 import localsearch.domainspecific.graphs.invariants.NearestCommonAncestor;
@@ -226,6 +223,9 @@ public class VarRootedTree extends VarTree {
 	// all children of v will be marked as children of parent p(v) of v
 	// v will be inserted between u and parent p(u) of u
 	public void nodeOptVarRootedTreePropagate(Node v, Node u) {
+		if (getFatherNode(u) == v) {
+			return;
+		}
 		if (u == v) {
 			System.out.println(name() + "::nodeOptVarRootedTreePropagate (v, u) = (" + v + ", " + u + ")");
 			System.exit(-1);
@@ -260,10 +260,13 @@ public class VarRootedTree extends VarTree {
 			}
 		}
 
-		super.removeEdge(getFatherEdge(u));
-		for (Edge e : getAdj(v)) {
+		Edge[] removedEdges = new Edge[getAdj(v).size()];
+		getAdj(v).toArray(removedEdges);
+		for (Edge e : removedEdges) {
 			super.removeEdge(e);
 		}
+		super.removeEdge(getFatherEdge(u));
+
 		super.addEdge(euv);
 		fatherNode.put(u, v);
 		fatherEdge.put(u, euv);
@@ -293,6 +296,10 @@ public class VarRootedTree extends VarTree {
 		}
 		if (u == root || v == root) {
 			System.out.println(name() + "::subTreeOptVarRootedTreePropagate " + u + " or " + v + " is the root");
+			System.exit(-1);
+		}
+		if (dominate(v, u)) {
+			System.out.println(name() + "::subTreeOptVarRootedTreePropagate (" + u + ",  " + v + ")" + " v dominate u");
 			System.exit(-1);
 		}
 		Node p = getFatherNode(u);
