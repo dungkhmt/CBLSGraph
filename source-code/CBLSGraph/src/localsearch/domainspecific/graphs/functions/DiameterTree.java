@@ -1,6 +1,7 @@
 package localsearch.domainspecific.graphs.functions;
 
 import localsearch.domainspecific.graphs.core.Edge;
+import localsearch.domainspecific.graphs.core.Graph;
 import localsearch.domainspecific.graphs.core.Node;
 import localsearch.domainspecific.graphs.core.UndirectedGraph;
 import localsearch.domainspecific.graphs.invariants.InsertableEdgesVarRootedTree;
@@ -306,6 +307,7 @@ public class DiameterTree implements GFunction {
         int h;
         int log2;
         double depth;
+        double[] diameterLCA;
         double[] longestUpLCA;
         double[] longestDownLCA;
         Data[] lca;
@@ -375,6 +377,7 @@ public class DiameterTree implements GFunction {
             if (h == (1 << log2)) {
                 log2++;
             }
+            diameterLCA = new double[log2];
             longestUpLCA = new double[log2];
             longestDownLCA = new double[log2];
             lca = new Data[log2];
@@ -384,15 +387,30 @@ public class DiameterTree implements GFunction {
             if (v != du.branchOfKthLongestPath[0]) {
                 longestUpLCA[0] = du.kthLongestPath[0] - du.depth;
                 longestDownLCA[0] = du.kthLongestPath[0] + du.depth;
+                if (v != du.branchOfKthLongestPath[1]) {
+                    diameterLCA[0] = du.kthLongestPath[0] + du.kthLongestPath[1];
+                } else {
+                    diameterLCA[0] = du.kthLongestPath[0] + du.kthLongestPath[2];
+                }
             } else {
                 longestUpLCA[0] = du.kthLongestPath[1] - du.depth;
                 longestDownLCA[0] = du.kthLongestPath[1] + du.depth;
+                diameterLCA[0] = du.kthLongestPath[1] + du.kthLongestPath[2];
+            }
+            if (du.branchOfKthLongestDiameterA[0] != v) {
+                diameterLCA[0] = Math.max(diameterLCA[0], du.kthLongestDiameterA[0]);
+            } else {
+                diameterLCA[0] = Math.max(diameterLCA[0], du.kthLongestDiameterA[1]);
             }
 
             for (int i = 1; i < log2; i++) {
                 lca[i] = lca[i - 1].lca[i - 1];
+
                 longestUpLCA[i] = Math.max(longestUpLCA[i - 1], lca[i - 1].longestUpLCA[i - 1]);
                 longestDownLCA[i] = Math.max(longestDownLCA[i - 1], lca[i - 1].longestDownLCA[i - 1]);
+
+                diameterLCA[i] = Math.max(diameterLCA[i - 1], lca[i - 1].diameterLCA[i - 1]);
+                diameterLCA[i] = Math.max(diameterLCA[i], longestDownLCA[i - 1] + lca[i - 1].longestUpLCA[i - 1]);
             }
         }
 
@@ -439,6 +457,24 @@ public class DiameterTree implements GFunction {
             return val;
         }
 
+        double getLongestDiameterLCA(int nbSteps) {
+            double val = 0;
+            double maxDepth = 0;
+            Data tmp = this;
+            for (int i = log2 - 1; i >= 0; i--) {
+                if (((nbSteps >> i) & 1) > 0) {
+                    val = Math.max(val, tmp.diameterLCA[i]);
+                    val = Math.max(val, tmp.longestUpLCA[i] + maxDepth);
+                    maxDepth = Math.max(maxDepth, tmp.longestDownLCA[i]);
+                    tmp = tmp.lca[i];
+                    if (tmp.log2 < i) {
+                        i = tmp.log2;
+                    }
+                }
+            }
+            return val;
+        }
+
         double getLongestOfNotBranch(Node node) {
             if (branchOfKthLongestPath[0] == node) {
                 return kthLongestPath[1];
@@ -447,7 +483,7 @@ public class DiameterTree implements GFunction {
             }
         }
 
-        double getLongestOfNotBranch(Node node1, Node node2) {
+        double getLongestOfNotBranchs(Node node1, Node node2) {
             if (branchOfKthLongestPath[0] != node1 && branchOfKthLongestPath[0] != node2) {
                 return kthLongestPath[0];
             } else if (branchOfKthLongestPath[1] != node1 && branchOfKthLongestPath[1] != node2) {
@@ -485,7 +521,7 @@ public class DiameterTree implements GFunction {
 
     public static void main(String[] args) {
         UndirectedGraph lub = new UndirectedGraph();
-        int n = 20;
+        int n = 100;
         for (int i = 1; i <= n; i++) {
             for (int j = i + 1; j <= n; j++) {
                 if (i != j) {
@@ -506,15 +542,16 @@ public class DiameterTree implements GFunction {
             vt.addEdge(e);
         }
         mgr.close();
-        vt.print();
+
 //
 
         for (int step = 1; step <= 10000000; step++) {
             System.out.println("Steps = " + step);
-
+            //vt.print();
             while (true) {
                 Node u = lub.getNodeByID(rand.nextInt(n) + 1);
                 Node v = lub.getNodeByID(rand.nextInt(n) + 1);
+                /* // NodeOptVarRootedTree
                 if (v != u && vt.getFatherNode(u) != v && v != vt.root() && u != vt.root()) {
                     double d = diameterTree.getNodeOptVarRootedTree(vt, v, u);
                     double oldV = diameterTree.getValue();
@@ -523,6 +560,22 @@ public class DiameterTree implements GFunction {
                     if (Math.abs(newV - (oldV + d)) > 1e-6) {
                         vt.print();
                         diameterTree.print();
+                        System.out.println("u = " + u + ", v = " + v);
+                        System.out.println("oldV = " + oldV + ", delta = " + d + ", newV = " + newV);
+                        System.exit(-1);
+                    }
+                    break;
+                }
+                */
+
+                if (v != u && !vt.dominate(v, u) && v != vt.root() && u != vt.root()) {
+                    double d = diameterTree.getSubTreeOptVarRootedTree(vt, v, u);
+                    double oldV = diameterTree.getValue();
+                    vt.subTreeOptVarRootedTreePropagate(v, u);
+                    double newV = diameterTree.getValue();
+                    if (Math.abs(newV - (oldV + d)) > 1e-6) {
+                        //vt.print();
+                        //diameterTree.print();
                         System.out.println("u = " + u + ", v = " + v);
                         System.out.println("oldV = " + oldV + ", delta = " + d + ", newV = " + newV);
                         System.exit(-1);
@@ -703,7 +756,6 @@ public class DiameterTree implements GFunction {
         Data d_v = dataOfNodes.get(v);
         Data d_p = dataOfNodes.get(p);
         Data d_fu = dataOfNodes.get(vt.getFatherNode(u));
-        Data d_fv = dataOfNodes.get(vt.getFatherNode(v));
         if (idxWeight < 0) {
             if (p == u) {
                 double valX = d_fu.getLongestOfNotBranch(u);
@@ -732,7 +784,7 @@ public class DiameterTree implements GFunction {
                 double valX = d_u.getLongestOfNotBranch(vt.getFatherNode(u));
                 double valY = d_u.getLongestUpLCA(d_u.h - d_p.h - 1);
                 valY = Math.max(valY, d_v.getLongestDownLCA(d_v.h - d_p.h - 1) - 2 * d_p.depth + d_u.depth);
-                valY = Math.max(valY, d_u.depth - d_p.depth + d_p.getLongestOfNotBranch(d_u.getParent(d_u.h - d_p.h - 1), d_v.getParent(d_v.h - d_p.h - 1)));
+                valY = Math.max(valY, d_u.depth - d_p.depth + d_p.getLongestOfNotBranchs(d_u.getParent(d_u.h - d_p.h - 1), d_v.getParent(d_v.h - d_p.h - 1)));
                 valY += valX;
                 if (valY == value) {
                     return 1;
@@ -751,7 +803,90 @@ public class DiameterTree implements GFunction {
 	@Override
 	public double getSubTreeOptVarRootedTree(VarRootedTree vt, Node v, Node u) {
 		// TODO Auto-generated method stub
-		return 0;
+        if (this.vt != vt) {
+            return 0;
+        }
+        Node p = vt.nca(u, v);
+        Node fu = vt.getFatherNode(u);
+        Node fv = vt.getFatherNode(v);
+        Data d_u = dataOfNodes.get(u);
+        Data d_v = dataOfNodes.get(v);
+        Data d_p = dataOfNodes.get(p);
+        Data d_fu = dataOfNodes.get(fu);
+        if (p == u) {
+            double newVal = Math.max(d_u.diameterB, d_v.diameterA);
+            newVal = Math.max(newVal, d_v.getLongestDiameterLCA(d_v.h - d_u.h));
+
+            double valA = d_v.getLongestDownLCA(d_v.h - d_u.h) - d_u.depth;
+            double valB = d_v.getLongestOfNotBranch(fv);
+            double valC = d_fu.getLongestOfNotBranch(u);
+
+            Graph g = vt.getLUB();
+            double wuv = weightOfEdge(g.getEdge(u, v));
+            double wfuv = weightOfEdge(g.getEdge(fu, v));
+            newVal = Math.max(newVal, valA + valB + wuv);
+            newVal = Math.max(newVal, valC + valB + wfuv);
+            newVal = Math.max(newVal, valA + valC + wuv + wfuv);
+
+            return newVal - value;
+        } else {
+            double newVal = Math.max(d_u.diameterA, d_v.diameterA);
+            newVal = Math.max(newVal, d_p.diameterB);
+
+            //System.out.println("newVal = " + newVal);
+
+            double valA = Math.max(0, d_u.getLongestDownLCA(d_u.h - d_p.h - 1) - d_p.depth);
+            double valB = Math.max(0, d_v.getLongestDownLCA(d_v.h - d_p.h - 1) - d_p.depth);
+
+
+
+            Node kthParentOfU = d_u.getParent(d_u.h - d_p.h - 1);
+            Node kthParentOfV = d_v.getParent(d_v.h - d_p.h - 1);
+            double valC = d_p.getLongestOfNotBranchs(kthParentOfU, kthParentOfV);
+
+            //System.out.println("1. valA = " + valA + ", valB = " + valB + ", valC = " + valC);
+
+            newVal = Math.max(newVal, valA + valB);
+            newVal = Math.max(newVal, valA + valC);
+            newVal = Math.max(newVal, valC + valB);
+
+            for (int i = 0; i < 3; i++) {
+                if (d_p.branchOfKthLongestPath[i] != kthParentOfU && d_p.branchOfKthLongestPath[i] != kthParentOfV) {
+                    for (int j = i + 1; j < 3; j++) {
+                        if (d_p.branchOfKthLongestPath[j] != kthParentOfU && d_p.branchOfKthLongestPath[j] != kthParentOfV) {
+                            newVal = Math.max(newVal, d_p.kthLongestPath[i] + d_p.kthLongestPath[j]);
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < 2; i++) {
+                if (d_p.branchOfKthLongestDiameterA[i] != kthParentOfU && d_p.branchOfKthLongestDiameterA[i] != kthParentOfV) {
+                    newVal = Math.max(newVal, d_p.kthLongestDiameterA[i]);
+                }
+            }
+
+            newVal = Math.max(newVal, d_v.getLongestDiameterLCA(d_v.h - d_p.h - 1));
+            newVal = Math.max(newVal, d_u.getLongestDiameterLCA(d_u.h - d_p.h - 1));
+
+            valC = Math.max(valC, valB) + d_fu.depth - d_p.depth;
+            valC = Math.max(valC, d_u.getLongestUpLCA(d_u.h - d_p.h - 1) - d_u.depth + d_fu.depth);
+
+            valA = d_u.getLongestOfNotBranch(fu);
+            valB = d_v.getLongestOfNotBranch(fv);
+
+           // System.out.println("1. valA = " + valA + ", valB = " + valB + ", valC = " + valC);
+
+            Graph g = vt.getLUB();
+            double wuv = weightOfEdge(g.getEdge(u, v));
+            double wfuv = weightOfEdge(g.getEdge(fu, v));
+            newVal = Math.max(newVal, valA + valB + wuv);
+            newVal = Math.max(newVal, valC + valB + wfuv);
+            newVal = Math.max(newVal, valA + valC + wuv + wfuv);
+
+            return newVal - value;
+        }
+
 	}
 
 //    public void debugGetReplaceEdgeDelta(VarGraph vt, Edge ei, Edge eo) {
