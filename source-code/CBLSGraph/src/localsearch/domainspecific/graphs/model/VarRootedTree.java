@@ -73,14 +73,14 @@ public class VarRootedTree extends VarTree {
 			}
 			System.out.println();
 		}
-		for(Node v : nodes){
-			for(Node u : nodes){
-				if(u.getID() > v.getID()){
-					Node n = nca(u,v);
-					System.out.println(name() + "::print, nca(" + v.getID() + "," + u.getID() + ") = " + n.getID());
-				}
-			}
-		}
+//		for(Node v : nodes){
+//			for(Node u : nodes){
+//				if(u.getID() > v.getID()){
+//					Node n = nca(u,v);
+//					System.out.println(name() + "::print, nca(" + v.getID() + "," + u.getID() + ") = " + n.getID());
+//				}
+//			}
+//		}
 	}
 
 	public boolean removeEdge(Edge e){
@@ -285,7 +285,7 @@ public class VarRootedTree extends VarTree {
 
 	// remove subtree rooted at v from vt,
 	// and re-insert this subtree between u and parent p(u) of u
-	public void subTreeOptVarRootedTreePropagate(VarRootedTree vt, Node v, Node u) {
+	public void subTreeOptVarRootedTreePropagate(Node v, Node u) {
 		if (u == v) {
 			System.out.println(name() + "::subTreeOptVarRootedTreePropagate (v, u) = (" + v + ", " + u + ")");
 			System.exit(-1);
