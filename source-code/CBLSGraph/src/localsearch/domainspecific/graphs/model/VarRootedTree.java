@@ -73,14 +73,14 @@ public class VarRootedTree extends VarTree {
 			}
 			System.out.println();
 		}
-//		for(Node v : nodes){
-//			for(Node u : nodes){
-//				if(u.getID() > v.getID()){
-//					Node n = nca(u,v);
-//					System.out.println(name() + "::print, nca(" + v.getID() + "," + u.getID() + ") = " + n.getID());
-//				}
-//			}
-//		}
+		for(Node v : nodes){
+			for(Node u : nodes){
+				if(u.getID() > v.getID()){
+					Node n = nca(u,v);
+					System.out.println(name() + "::print, nca(" + v.getID() + "," + u.getID() + ") = " + n.getID());
+				}
+			}
+		}
 	}
 
 	public boolean removeEdge(Edge e){

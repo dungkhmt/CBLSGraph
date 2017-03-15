@@ -2,6 +2,7 @@ package localsearch.domainspecific.graphs.tests;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 import localsearch.domainspecific.graphs.core.Node;
@@ -20,42 +21,26 @@ public class TestVarRootedTree {
 
 	public void test(){
 		try{
-			Scanner in = new Scanner(new File("/home/hoangnt/IdeaProjects/CBLSGraph/source-code/CBLSGraph/data/g.txt"));
-			HashMap<Integer, Node> m = new HashMap<Integer, Node>();
-			UndirectedGraph ug = new UndirectedGraph();
-//			int n = 20;
-//			for (int i = 1; i <= n; i++) {
-//				for (int j = 1; j <= n; j++) {
-//					if (i != j) {
-//						ug.addEdgeByID((i - 1) * n + j, i, j);
-//					}
-//				}
-//			}
-			while(in.hasNext()){
-				int vid = in.nextInt();
-				if(vid == -1) break;
-				Node v = new Node(vid);
-				m.put(vid, v);
+			UndirectedGraph lub = new UndirectedGraph();
+			int n = 100;
+			Random rand = new Random();
+			for (int i = 1; i <= n; i++) {
+				for (int j = i + 1; j <= n; j++) {
+					if (i != j) {
+						lub.addEdgeByID((i - 1) * n + j, i, j);
+						Edge e = lub.getEdgeByID((i - 1) * n + j);
+						e.setWeight(rand.nextInt(20) + 1);
+					}
+				}
 			}
-			int eid = -1;
-			while(in.hasNext()){
-				int uid = in.nextInt();
-				if(uid == -1) break;
-				int vid = in.nextInt();
-				eid++;
-				ug.addEdgeByID(eid,uid,vid);
-			}
-			in.close();
-			ug.print();
 
 
 			LSGraphManager mgr = new LSGraphManager();
-			Node r = ug.getNodeByID(1);
-			VarRootedTree t = new VarRootedTree(mgr,ug,r);
-			InsertableEdgesVarRootedTree I = new InsertableEdgesVarRootedTree(t);
-			RemovableEdgesVarRootedTree R = new RemovableEdgesVarRootedTree(t);
-			ReplacingEdgesVarRootedTree RPL = new ReplacingEdgesVarRootedTree(t);
-			DiameterTree diameterTree = new DiameterTree(t);
+			VarRootedTree vt = new VarRootedTree(mgr, lub, lub.getNodeByID(1));
+			DiameterTree diameterTree = new DiameterTree(vt, 0);
+			InsertableEdgesVarRootedTree I = new InsertableEdgesVarRootedTree(vt);
+			RemovableEdgesVarRootedTree R = new RemovableEdgesVarRootedTree(vt);
+			ReplacingEdgesVarRootedTree RPL = new ReplacingEdgesVarRootedTree(vt);
 			mgr.close(); // duoc goi o day
 			
 			//Edge eii = Utility.randomSelect(I.getEdges());
@@ -67,41 +52,110 @@ public class TestVarRootedTree {
 			//if(true) return;
 			
 			
-			t.print();
+			//t.print();
 			System.out.println("Init I = " + Utility.setEdge2String(I.getEdges()) + ", R = " + 
 			Utility.setEdge2String(R.getEdges()));
-			
-			java.util.Random rand = new java.util.Random();
+
 			HashSet<Edge> RP = new HashSet<Edge>();
-			for(int it = 0; it < 100000; it++){
-				int choice = rand.nextInt(3);
+			for(int it = 0; it < 10000000; it++){
+				int choice = rand.nextInt(5);
 				if(choice == 0){// add edge
 					Edge e = Utility.randomSelect(I.getEdges());
 					if(e != null){
-						t.addEdgePropagate(e);
-						System.out.println(it + ", addEdge(" + e.toString() + "), t.txt = "); t.print();
+						System.out.println(it + ", addEdge(" + e.toString() + "), t.txt = "); //vt.print();
+						double d = diameterTree.getAddEdgeVarRootedTree(vt, e);
+						double oldV = diameterTree.getValue();
+						vt.addEdgePropagate(e);
+						double newV = diameterTree.getValue();
+						if (Math.abs(newV - (oldV + d)) > 1e-6) {
+							//vt.print();
+							//diameterTree.print();
+							System.out.println("e = " + e);
+							System.out.println("oldV = " + oldV + ", delta = " + d + ", newV = " + newV);
+							System.exit(-1);
+						}
+
 //						RPL.print();
 //						R.print();
 					}
 				}else if(choice == 1){// remove edge
 					Edge e = Utility.randomSelect(R.getEdges());
 					if(e != null){
-						t.removeEdgePropagate(e);
-						System.out.println(it + ", removeEdge(" + e.toString() + "), t.txt = "); t.print();
+						System.out.println(it + ", removeEdge(" + e.toString() + "), t.txt = "); //vt.print();
+						double d = diameterTree.getRemoveEdgeVarRootedTree(vt, e);
+						double oldV = diameterTree.getValue();
+						vt.removeEdgePropagate(e);
+						double newV = diameterTree.getValue();
+						if (Math.abs(newV - (oldV + d)) > 1e-6) {
+							//vt.print();
+							//diameterTree.print();
+							System.out.println("e = " + e);
+							System.out.println("oldV = " + oldV + ", delta = " + d + ", newV = " + newV);
+							System.exit(-1);
+						}
+
 //						RPL.print();
 //						R.print();
 					}
 				}else if(choice == 2){// replace
 					Edge ei = Utility.randomSelect(RPL.getEdges());
 					if(ei != null){
-						Utility.collectReplacedEdges(t, ei, RP);
+						Utility.collectReplacedEdges(vt, ei, RP);
 						Edge eo = Utility.randomSelect(RP);
 						if(eo != null){
-							t.replaceEdgePropagate(ei, eo);
-							System.out.println(it + ", replaceEdge(" + eo.toString() + "," + ei.toString() + "), t.txt = "); t.print();
+							System.out.println(it + ", replaceEdge(" + ei.toString() + "," + eo.toString() + "), t.txt = "); //vt.print();
+							double d = diameterTree.getReplaceEdgeVarRootedTree(vt, ei, eo);
+							double oldV = diameterTree.getValue();
+							vt.replaceEdgePropagate(ei, eo);
+							double newV = diameterTree.getValue();
+							if (Math.abs(newV - (oldV + d)) > 1e-6) {
+								//vt.print();
+								//diameterTree.print();
+								System.out.println("ei = " + ei + ", eo = " + eo);
+								System.out.println("oldV = " + oldV + ", delta = " + d + ", newV = " + newV);
+								System.exit(-1);
+							}
+
 //							RPL.print();
 //							R.print();
 						}
+					}
+				} else if (choice == 3) {
+					Node u = lub.getNodeByID(rand.nextInt(n) + 1);
+					Node v = lub.getNodeByID(rand.nextInt(n) + 1);
+					// NodeOptVarRootedTree
+					if (vt.contains(u) && vt.contains(v) && v != u && vt.getFatherNode(u) != v && v != vt.root() && u != vt.root()) {
+						System.out.println(it + ", nodeOpt(" + v + ", " + u + ")");
+						double d = diameterTree.getNodeOptVarRootedTree(vt, v, u);
+						double oldV = diameterTree.getValue();
+						vt.nodeOptVarRootedTreePropagate(v, u);
+						double newV = diameterTree.getValue();
+						if (Math.abs(newV - (oldV + d)) > 1e-6) {
+							//                        vt.print();
+							//                        diameterTree.print();
+							System.out.println("u = " + u + ", v = " + v);
+							System.out.println("oldV = " + oldV + ", delta = " + d + ", newV = " + newV);
+							System.exit(-1);
+						}
+						//break;
+					}
+				} else {
+					Node u = lub.getNodeByID(rand.nextInt(n) + 1);
+					Node v = lub.getNodeByID(rand.nextInt(n) + 1);
+					if (vt.contains(u) && vt.contains(v) && v != u && !vt.dominate(v, u) && v != vt.root() && u != vt.root()) {
+						System.out.println(it + ", subTreeOpt(" + v + ", " + u + ")");
+						double d = diameterTree.getSubTreeOptVarRootedTree(vt, v, u);
+						double oldV = diameterTree.getValue();
+						vt.subTreeOptVarRootedTreePropagate(v, u);
+						double newV = diameterTree.getValue();
+						if (Math.abs(newV - (oldV + d)) > 1e-6) {
+							//vt.print();
+							//diameterTree.print();
+							System.out.println("u = " + u + ", v = " + v);
+							System.out.println("oldV = " + oldV + ", delta = " + d + ", newV = " + newV);
+							System.exit(-1);
+						}
+//						break;
 					}
 				}
 			}

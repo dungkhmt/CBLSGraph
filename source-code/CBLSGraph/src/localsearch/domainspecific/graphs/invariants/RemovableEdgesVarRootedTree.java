@@ -208,12 +208,14 @@ public class RemovableEdgesVarRootedTree implements GInvariant {
             System.out.println(name() + "::propagateNodeOptVarRootedTree (v, u) = (" + v + ", " + u + ")");
             System.exit(-1);
         }
-        removableEdges.clear();
-        for (Edge e : vt.getEdges()) {
-            if (vt.getAdj(e.getBegin()).size() == 1 || vt.getAdj(e.getEnd()).size() == 1) {
-                removableEdges.add(e);
-            }
-        }
+
+        initPropagate();
+//        removableEdges.clear();
+//        for (Edge e : vt.getEdges()) {
+//            if (vt.getAdj(e.getBegin()).size() == 1 || vt.getAdj(e.getEnd()).size() == 1) {
+//                removableEdges.add(e);
+//            }
+//        }
 	}
 
 	@Override
@@ -226,12 +228,13 @@ public class RemovableEdgesVarRootedTree implements GInvariant {
             System.out.println(name() + "::propagateSubTreeOptVarRootedTree (v, u) = (" + v + ", " + u + ")");
             System.exit(-1);
         }
-        removableEdges.clear();
-        for (Edge e : vt.getEdges()) {
-            if (vt.getAdj(e.getBegin()).size() == 1 || vt.getAdj(e.getEnd()).size() == 1) {
-                removableEdges.add(e);
-            }
-        }
+        initPropagate();
+//        removableEdges.clear();
+//        for (Edge e : vt.getEdges()) {
+//            if (vt.getAdj(e.getBegin()).size() == 1 || vt.getAdj(e.getEnd()).size() == 1) {
+//                removableEdges.add(e);
+//            }
+//        }
 	}
 
     public void print() {

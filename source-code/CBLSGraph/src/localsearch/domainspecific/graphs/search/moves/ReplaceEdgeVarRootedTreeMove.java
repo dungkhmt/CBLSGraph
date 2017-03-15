@@ -20,7 +20,7 @@ public class ReplaceEdgeVarRootedTreeMove implements GMove {
 	@Override
 	public void move() {
 		// TODO Auto-generated method stub
-		vt.replaceEdgePropagate(eo, ei);
+		vt.replaceEdgePropagate(ei, eo);
 	}
 
 	@Override

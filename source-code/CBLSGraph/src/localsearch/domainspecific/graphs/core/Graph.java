@@ -105,6 +105,10 @@ public class Graph {
 
 	public Edge getEdge(Node u, Node v) {
 		HashMap<Node, Edge> mNode2Edge = mNodeNode2Edge.get(u);
-		return mNode2Edge.containsKey(v) ? mNodeNode2Edge.get(u).get(v) : null;
+		if (mNode2Edge != null) {
+			return mNodeNode2Edge.get(u).get(v);
+		} else {
+			return null;
+		}
 	}
 }

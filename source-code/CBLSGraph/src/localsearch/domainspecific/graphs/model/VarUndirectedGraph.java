@@ -38,14 +38,14 @@ public class VarUndirectedGraph extends VarGraph {
 		Node v = e.getEnd();
 		Adj.get(u).remove(e);
 		Adj.get(v).remove(e);
-//		if (Adj.get(u).size() == 0) {
-//			removeNode(u);
-//			Adj.remove(u);
-//		}
-//		if (Adj.get(v).size() == 0) {
-//			removeNode(v);
-//			Adj.remove(v);
-//		}
+		if (Adj.get(u).size() == 0) {
+			removeNode(u);
+			Adj.remove(u);
+		}
+		if (Adj.get(v).size() == 0) {
+			removeNode(v);
+			Adj.remove(v);
+		}
 		return true;
 	}
 

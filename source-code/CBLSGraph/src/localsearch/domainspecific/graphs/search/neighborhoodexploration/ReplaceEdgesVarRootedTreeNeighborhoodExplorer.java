@@ -21,6 +21,7 @@ public class ReplaceEdgesVarRootedTreeNeighborhoodExplorer implements GNeighborh
 		this.replacingEdges = replacingEdges;
 		this.F = F;
 	}
+
 	@Override
 	public void exploreNeighborhood(GNeighborhood N) {
 		// TODO Auto-generated method stub
