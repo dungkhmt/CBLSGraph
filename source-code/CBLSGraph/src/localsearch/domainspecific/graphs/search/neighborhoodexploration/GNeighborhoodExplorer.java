@@ -1,6 +1,5 @@
 package localsearch.domainspecific.graphs.search.neighborhoodexploration;
 
-import localsearch.domainspecific.graphs.core.LexMultiValues;
 import localsearch.domainspecific.graphs.search.GNeighborhood;
 
 public interface GNeighborhoodExplorer {
